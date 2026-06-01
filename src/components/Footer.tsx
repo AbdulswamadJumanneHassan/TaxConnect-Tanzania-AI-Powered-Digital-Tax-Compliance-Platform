@@ -16,7 +16,7 @@ export function Footer() {
                         </p>
                         <div className="flex gap-4 mt-8">
                             {[Globe, MessageCircle, Send].map((Icon, i) => (
-                                <a key={i} href="#" className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-primary transition-colors">
+                                <a key={i} href="#" className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center hover:bg-primary hover:text-secondary transition-colors">
                                     <Icon className="w-5 h-5" />
                                 </a>
                             ))}

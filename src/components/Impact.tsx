@@ -21,7 +21,7 @@ export function Impact() {
                         className="flex-1"
                     >
                         <h2 className="text-3xl md:text-5xl font-bold mb-8 italic">
-                            Matokeo <span className="text-secondary text-glow">Chanya</span> kwa Taifa Letu
+                            Matokeo <span className="text-primary text-glow">Chanya</span> kwa Taifa Letu
                         </h2>
                         <p className="text-lg text-foreground/70 mb-8 leading-relaxed">
                             Kwa kurasimisha biashara ndogo ndogo, tunasaidia kuongeza wigo wa kodi ambao unasaidia serikali kuboresha huduma za jamii kama barabara, shule, na hospitali.
@@ -35,8 +35,8 @@ export function Impact() {
                                 "Kuboresha Huduma za Jamii"
                             ].map((item, i) => (
                                 <div key={i} className="flex items-center gap-3">
-                                    <div className="w-6 h-6 bg-secondary/20 rounded-full flex items-center justify-center">
-                                        <div className="w-2 h-2 bg-secondary rounded-full" />
+                                    <div className="w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center">
+                                        <div className="w-2 h-2 bg-primary rounded-full" />
                                     </div>
                                     <span className="font-medium">{item}</span>
                                 </div>
@@ -52,7 +52,7 @@ export function Impact() {
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
-                                className="p-8 glass rounded-3xl text-center flex flex-col items-center justify-center border border-primary/10"
+                                className="p-8 glass rounded-3xl text-center flex flex-col items-center justify-center border border-primary/20"
                             >
                                 <div className="text-3xl md:text-5xl font-extrabold text-primary mb-2">
                                     {stat.value}

@@ -32,9 +32,9 @@ export function AIAssistant() {
             {/* Floating Button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-8 right-8 w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50 group"
+                className="fixed bottom-8 right-8 w-16 h-16 gold-gradient rounded-full flex items-center justify-center shadow-2xl shadow-primary/30 hover:scale-110 transition-transform z-50 group"
             >
-                <MessageSquare className="w-8 h-8 group-hover:rotate-12 transition-transform" />
+                <MessageSquare className="w-8 h-8 text-secondary group-hover:rotate-12 transition-transform" />
                 <span className="absolute -top-1 -right-1 flex h-4 w-4">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-4 w-4 bg-secondary"></span>
@@ -51,7 +51,7 @@ export function AIAssistant() {
                         className="fixed bottom-28 right-8 w-[380px] h-[500px] glass rounded-3xl z-50 flex flex-col overflow-hidden border border-white/20 shadow-2xl"
                     >
                         {/* Header */}
-                        <div className="bg-primary p-6 text-white flex items-center justify-between">
+                        <div className="gold-gradient p-6 text-secondary flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                                     <Bot className="w-6 h-6" />
@@ -74,8 +74,8 @@ export function AIAssistant() {
                             {messages.map((m, i) => (
                                 <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                                     <div className={`max-w-[80%] p-4 rounded-2xl text-sm ${m.role === "user"
-                                            ? "bg-primary text-white rounded-tr-none"
-                                            : "bg-white/50 text-foreground rounded-tl-none border border-white/20"
+                                            ? "bg-primary text-secondary font-semibold rounded-tr-none border border-primary-dark/20"
+                                            : "bg-white/50 text-foreground rounded-tl-none border border-primary/20"
                                         }`}>
                                         {m.content}
                                     </div>
@@ -96,7 +96,7 @@ export function AIAssistant() {
                                 />
                                 <button
                                     onClick={handleSend}
-                                    className="absolute right-2 top-1.5 p-1.5 bg-primary text-white rounded-xl hover:bg-primary-dark transition-colors"
+                                    className="absolute right-2 top-1.5 p-1.5 gold-gradient text-secondary rounded-xl hover:opacity-90 transition-colors"
                                 >
                                     <Send className="w-4 h-4" />
                                 </button>

@@ -44,7 +44,7 @@ export function Navbar() {
                         <Link
                             key={link.name}
                             href={link.href}
-                            className="text-sm font-medium hover:text-primary transition-colors"
+                            className="text-sm font-medium text-secondary hover:text-primary transition-colors"
                         >
                             {language === "sw" ? link.name : link.enName}
                         </Link>
@@ -53,7 +53,7 @@ export function Navbar() {
                     <div className="flex items-center gap-4 ml-4">
                         <button
                             onClick={toggleLanguage}
-                            className="flex items-center gap-1.5 text-sm font-semibold text-secondary hover:text-primary transition-colors"
+                            className="flex items-center gap-1.5 text-sm font-semibold text-secondary/70 hover:text-primary transition-colors"
                         >
                             <Globe className="w-4 h-4" />
                             {language === "sw" ? "EN" : "SW"}
@@ -61,7 +61,7 @@ export function Navbar() {
 
                         <Link
                             href="/login"
-                            className="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition-all shadow-md flex items-center gap-2"
+                            className="px-5 py-2.5 gold-gradient text-secondary text-sm font-bold rounded-xl hover:opacity-90 transition-all shadow-md shadow-primary/30 flex items-center gap-2"
                         >
                             <LogIn className="w-4 h-4" />
                             {language === "sw" ? "Ingia" : "Login"}
@@ -108,7 +108,7 @@ export function Navbar() {
                             ))}
                             <Link
                                 href="/login"
-                                className="mt-4 px-6 py-3 bg-primary text-white text-center font-bold rounded-xl"
+                                className="mt-4 px-6 py-3 gold-gradient text-secondary text-center font-bold rounded-xl"
                             >
                                 {language === "sw" ? "Ingia Sasa" : "Login Now"}
                             </Link>
