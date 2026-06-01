@@ -83,6 +83,7 @@ export function Features() {
                     {features.map((feature, index) => (
                         <motion.div
                             key={index}
+                            id={feature.title === "Tax Rewards Program" ? "rewards" : undefined}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}

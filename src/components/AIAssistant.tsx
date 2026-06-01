@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, Send, X, Bot, User } from "lucide-react";
 
@@ -10,6 +10,19 @@ export function AIAssistant() {
         { role: "bot", content: "Habari! Mimi ni msaidizi wako wa kodi. Una swali gani leo?", swContent: "Habari! Mimi ni msaidizi wako wa kodi. Una swali gani leo?" }
     ]);
     const [input, setInput] = useState("");
+
+    useEffect(() => {
+        const openChatIfHash = () => {
+            if (typeof window !== "undefined" && window.location.hash === "#chat") {
+                setIsOpen(true);
+            }
+        };
+
+        openChatIfHash();
+        window.addEventListener("hashchange", openChatIfHash);
+
+        return () => window.removeEventListener("hashchange", openChatIfHash);
+    }, []);
 
     const handleSend = () => {
         if (!input.trim()) return;

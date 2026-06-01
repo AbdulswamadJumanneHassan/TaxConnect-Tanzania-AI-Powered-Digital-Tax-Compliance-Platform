@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export function Footer() {
     return (
-        <footer className="pt-24 pb-12 border-t border-white/5 bg-slate-950 text-white">
+        <footer id="support" className="pt-24 pb-12 border-t border-white/5 bg-slate-950 text-white">
             <div className="container mx-auto px-6">
                 <div className="grid md:grid-cols-4 gap-12 mb-16">
                     <div className="col-span-1 md:col-span-1">
