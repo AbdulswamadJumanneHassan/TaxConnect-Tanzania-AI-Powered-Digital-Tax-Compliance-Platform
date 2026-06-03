@@ -1,21 +1,21 @@
 import { Navbar } from "@/components/Navbar";
-import { Hero } from "@/components/Hero";
-import { Features } from "@/components/Features";
-import { DigitalReceipt } from "@/components/DigitalReceipt";
-import { Impact } from "@/components/Impact";
-import { SupportSection } from "@/components/SupportSection";
+import { HeroMinimal } from "@/components/HeroMinimal";
+import { FeaturesMinimal } from "@/components/FeaturesMinimal";
+import { ShowcaseMinimal } from "@/components/ShowcaseMinimal";
+import { PricingMinimal } from "@/components/PricingMinimal";
+import { CTAMinimal } from "@/components/CTAMinimal";
 import { AIAssistant } from "@/components/AIAssistant";
 import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen w-full bg-slate-950">
       <Navbar />
-      <Hero />
-      <Features />
-      <DigitalReceipt />
-      <Impact />
-      <SupportSection />
+      <HeroMinimal />
+      <FeaturesMinimal />
+      <ShowcaseMinimal />
+      <PricingMinimal />
+      <CTAMinimal />
       <AIAssistant />
       <Footer />
     </main>

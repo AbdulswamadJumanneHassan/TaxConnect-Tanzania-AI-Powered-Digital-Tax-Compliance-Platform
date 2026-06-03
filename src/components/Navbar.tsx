@@ -32,8 +32,10 @@ export function Navbar() {
 
     return (
         <nav
-            className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "py-3 glass" : "py-5 bg-transparent"
-                }`}
+            className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled 
+                ? "py-3 bg-slate-950/80 backdrop-blur-md border-b border-slate-800" 
+                : "py-5 bg-transparent"
+            }`}
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
                 <Logo />
@@ -44,7 +46,7 @@ export function Navbar() {
                         <Link
                             key={link.name}
                             href={link.href}
-                            className="text-sm font-medium text-secondary hover:text-primary transition-colors"
+                            className="text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors duration-200"
                         >
                             {language === "sw" ? link.name : link.enName}
                         </Link>
@@ -53,7 +55,7 @@ export function Navbar() {
                     <div className="flex items-center gap-4 ml-4">
                         <button
                             onClick={toggleLanguage}
-                            className="flex items-center gap-1.5 text-sm font-semibold text-secondary/70 hover:text-primary transition-colors"
+                            className="flex items-center gap-1.5 text-sm font-semibold text-slate-400 hover:text-blue-400 transition-colors duration-200"
                         >
                             <Globe className="w-4 h-4" />
                             {language === "sw" ? "EN" : "SW"}
@@ -61,7 +63,7 @@ export function Navbar() {
 
                         <Link
                             href="/login"
-                            className="px-5 py-2.5 gold-gradient text-secondary text-sm font-bold rounded-xl hover:opacity-90 transition-all shadow-md shadow-primary/30 flex items-center gap-2"
+                            className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all duration-200 flex items-center gap-2"
                         >
                             <LogIn className="w-4 h-4" />
                             {language === "sw" ? "Ingia" : "Login"}
@@ -73,13 +75,13 @@ export function Navbar() {
                 <div className="md:hidden flex items-center gap-4">
                     <button
                         onClick={toggleLanguage}
-                        className="p-2 text-secondary"
+                        className="p-2 text-slate-300"
                     >
                         <Globe className="w-5 h-5" />
                     </button>
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="p-2 text-foreground"
+                        className="p-2 text-slate-300"
                     >
                         {isOpen ? <X /> : <Menu />}
                     </button>
@@ -93,7 +95,7 @@ export function Navbar() {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        className="absolute top-full left-0 w-full glass md:hidden border-t border-white/10"
+                        className="absolute top-full left-0 w-full bg-slate-950/95 backdrop-blur-md md:hidden border-t border-slate-800"
                     >
                         <div className="flex flex-col p-6 gap-4">
                             {navLinks.map((link) => (
@@ -101,14 +103,14 @@ export function Navbar() {
                                     key={link.name}
                                     href={link.href}
                                     onClick={() => setIsOpen(false)}
-                                    className="text-lg font-medium py-2 border-b border-white/5"
+                                    className="text-lg font-medium py-2 border-b border-slate-800 text-slate-300 hover:text-blue-400 transition-colors"
                                 >
                                     {language === "sw" ? link.name : link.enName}
                                 </Link>
                             ))}
                             <Link
                                 href="/login"
-                                className="mt-4 px-6 py-3 gold-gradient text-secondary text-center font-bold rounded-xl"
+                                className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all"
                             >
                                 {language === "sw" ? "Ingia Sasa" : "Login Now"}
                             </Link>

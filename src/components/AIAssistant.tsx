@@ -1,15 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, Send, X, Bot, User } from "lucide-react";
+import { MessageSquare, Send, X, Bot } from "lucide-react";
 
 export function AIAssistant() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { role: "bot", content: "Habari! Mimi ni msaidizi wako wa kodi. Una swali gani leo?", swContent: "Habari! Mimi ni msaidizi wako wa kodi. Una swali gani leo?" }
+        { role: "bot", content: "Habari! Mimi ni msaidizi wako wa kodi. Una swali gani leo?" }
     ]);
     const [input, setInput] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    // Auto-scroll to latest message
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     useEffect(() => {
         const openChatIfHash = () => {
@@ -25,19 +36,30 @@ export function AIAssistant() {
     }, []);
 
     const handleSend = () => {
-        if (!input.trim()) return;
+        if (!input.trim() || isLoading) return;
 
-        setMessages([...messages, { role: "user", content: input, swContent: input }]);
+        // Add user message
+        const userMessage = { role: "user", content: input };
+        setMessages(prev => [...prev, userMessage]);
         setInput("");
+        setIsLoading(true);
 
         // Simulate AI response
         setTimeout(() => {
+            const responses = [
+                "Asante kwa swali lako! Hii ni majibu mazuri. Kwa biashara yako, unapaswa kufanya kazi na TRA kila mwezi.",
+                "Karibu sana! Smart Tax inakusaidia kuisikiliza maswali yako kila wakati. Je, una swali lingine?",
+                "Ndiyo, hiyo ni sahihi kabisa. Biashara zote zinahitaji kufanya filing ya kodi kwa TRA.",
+                "Excellent question! Hii ni moja ya huduma zetu muhimu sana.",
+            ];
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            
             setMessages(prev => [...prev, {
                 role: "bot",
-                content: "Asante kwa swali lako. Kwa biashara ya Kariakoo, unapaswa kulipa kodi ya mapato (Income Tax) na kodi ya ongezeko la thamani (VAT) ikiwa mauzo yako yanazidi milioni 100 kwa mwaka.",
-                swContent: "Asante kwa swali lako. Kwa biashara ya Kariakoo, unapaswa kulipa kodi ya mapato (Income Tax) na kodi ya ongezeko la thamani (VAT) ikiwa mauzo yako yanazidi milioni 100 kwa mwaka."
+                content: randomResponse
             }]);
-        }, 1000);
+            setIsLoading(false);
+        }, 800);
     };
 
     return (
@@ -45,12 +67,12 @@ export function AIAssistant() {
             {/* Floating Button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-8 right-8 w-16 h-16 gold-gradient rounded-full flex items-center justify-center shadow-2xl shadow-primary/30 hover:scale-110 transition-transform z-50 group"
+                className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-2xl shadow-blue-500/30 hover:scale-110 transition-transform z-50 group"
             >
-                <MessageSquare className="w-8 h-8 text-secondary group-hover:rotate-12 transition-transform" />
+                <MessageSquare className="w-8 h-8 text-white group-hover:rotate-12 transition-transform" />
                 <span className="absolute -top-1 -right-1 flex h-4 w-4">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-4 w-4 bg-secondary"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-4 w-4 bg-white"></span>
                 </span>
             </button>
 
@@ -61,10 +83,10 @@ export function AIAssistant() {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="fixed bottom-28 right-8 w-[380px] h-[500px] glass rounded-3xl z-50 flex flex-col overflow-hidden border border-white/20 shadow-2xl"
+                        className="fixed bottom-28 right-8 w-[380px] h-[500px] bg-slate-800/95 backdrop-blur-md rounded-3xl z-50 flex flex-col overflow-hidden border border-slate-700 shadow-2xl shadow-black/50"
                     >
                         {/* Header */}
-                        <div className="gold-gradient p-6 text-secondary flex items-center justify-between">
+                        <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 text-white flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                                     <Bot className="w-6 h-6" />
@@ -85,31 +107,62 @@ export function AIAssistant() {
                         {/* Messages */}
                         <div className="flex-1 overflow-y-auto p-6 space-y-4">
                             {messages.map((m, i) => (
-                                <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                    className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                                >
                                     <div className={`max-w-[80%] p-4 rounded-2xl text-sm ${m.role === "user"
-                                            ? "bg-primary text-secondary font-semibold rounded-tr-none border border-primary-dark/20"
-                                            : "bg-white/50 text-foreground rounded-tl-none border border-primary/20"
+                                            ? "bg-blue-600 text-white font-semibold rounded-tr-none"
+                                            : "bg-slate-700 text-slate-100 rounded-tl-none"
                                         }`}>
                                         {m.content}
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
+                            
+                            {/* Loading indicator */}
+                            {isLoading && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="flex justify-start"
+                                >
+                                    <div className="bg-slate-700 text-slate-100 p-4 rounded-2xl rounded-tl-none">
+                                        <div className="flex gap-2">
+                                            <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" />
+                                            <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-100" />
+                                            <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-200" />
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                            
+                            <div ref={messagesEndRef} />
                         </div>
 
                         {/* Input */}
-                        <div className="p-4 bg-white/30 border-t border-white/20">
+                        <div className="p-4 bg-slate-700/50 border-t border-slate-700">
                             <div className="relative">
                                 <input
                                     type="text"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
-                                    onKeyPress={(e) => e.key === "Enter" && handleSend()}
+                                    onKeyPress={(e) => {
+                                        if (e.key === "Enter" && !isLoading) {
+                                            handleSend();
+                                        }
+                                    }}
                                     placeholder="Uliza chochote..."
-                                    className="w-full bg-white/50 border border-white/30 rounded-2xl py-3 pl-4 pr-12 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+                                    disabled={isLoading}
+                                    className="w-full bg-slate-700 border border-slate-600 rounded-2xl py-3 pl-4 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm text-white placeholder-slate-400 disabled:opacity-50"
                                 />
                                 <button
                                     onClick={handleSend}
-                                    className="absolute right-2 top-1.5 p-1.5 gold-gradient text-secondary rounded-xl hover:opacity-90 transition-colors"
+                                    disabled={isLoading || !input.trim()}
+                                    className="absolute right-2 top-1.5 p-1.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <Send className="w-4 h-4" />
                                 </button>
