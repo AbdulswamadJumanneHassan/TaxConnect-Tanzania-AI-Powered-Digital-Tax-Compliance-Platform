@@ -6,11 +6,14 @@ import { PricingMinimal } from "@/components/PricingMinimal";
 import { CTAMinimal } from "@/components/CTAMinimal";
 import { AIAssistant } from "@/components/AIAssistant";
 import { Footer } from "@/components/Footer";
+import { getSession } from "@/lib/auth";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getSession();
+
   return (
     <main className="min-h-screen w-full bg-slate-950">
-      <Navbar />
+      <Navbar user={session} />
       <HeroMinimal />
       <FeaturesMinimal />
       <ShowcaseMinimal />

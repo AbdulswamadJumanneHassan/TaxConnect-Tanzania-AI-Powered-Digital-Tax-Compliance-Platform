@@ -12,7 +12,7 @@ export function Footer() {
                     <div className="col-span-1 md:col-span-1">
                         <Logo />
                         <p className="mt-6 text-slate-400 text-sm leading-relaxed">
-                            Tanzania's leading AI platform for tax compliance and business growth. Empowering small traders one digital receipt at a time.
+                            Tanzania&apos;s leading AI platform for tax compliance and business growth. Empowering small traders one digital receipt at a time.
                         </p>
                         <div className="flex gap-4 mt-8">
                             {[Globe, MessageCircle, Send].map((Icon, i) => (

@@ -21,18 +21,34 @@ export default function LoginPage() {
         setError("");
         setLoading(true);
 
-        // Validation
         if (!email || !password) {
             setError("Tafadhali jaza sehemu zote");
             setLoading(false);
             return;
         }
 
-        // Simulate authentication
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        
-        // Redirect to dashboard
-        router.push("/dashboard");
+        try {
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                setError(data.error || "Tafadhali jaribu tena");
+                setLoading(false);
+                return;
+            }
+
+            router.push("/dashboard");
+        } catch (error) {
+            setError("Tatizo la mtandao. Jaribu tena.");
+            setLoading(false);
+        }
     };
 
     return (

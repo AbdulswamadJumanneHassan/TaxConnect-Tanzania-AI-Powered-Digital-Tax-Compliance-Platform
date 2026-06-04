@@ -35,31 +35,41 @@ export function AIAssistant() {
         return () => window.removeEventListener("hashchange", openChatIfHash);
     }, []);
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (!input.trim() || isLoading) return;
 
-        // Add user message
         const userMessage = { role: "user", content: input };
-        setMessages(prev => [...prev, userMessage]);
+        setMessages((prev) => [...prev, userMessage]);
         setInput("");
         setIsLoading(true);
 
-        // Simulate AI response
-        setTimeout(() => {
-            const responses = [
-                "Asante kwa swali lako! Hii ni majibu mazuri. Kwa biashara yako, unapaswa kufanya kazi na TRA kila mwezi.",
-                "Karibu sana! Smart Tax inakusaidia kuisikiliza maswali yako kila wakati. Je, una swali lingine?",
-                "Ndiyo, hiyo ni sahihi kabisa. Biashara zote zinahitaji kufanya filing ya kodi kwa TRA.",
-                "Excellent question! Hii ni moja ya huduma zetu muhimu sana.",
-            ];
-            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-            
-            setMessages(prev => [...prev, {
-                role: "bot",
-                content: randomResponse
-            }]);
+        try {
+            const response = await fetch("/api/ai/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ question: input }),
+            });
+
+            const data = await response.json();
+            const botReply = data.answer || data.error || "Samahani, jaribu tena.";
+
+            setMessages((prev) => [
+                ...prev,
+                { role: "bot", content: botReply },
+            ]);
+        } catch (error) {
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "bot",
+                    content: "Tatizo la mtandao. Jaribu tena.",
+                },
+            ]);
+        } finally {
             setIsLoading(false);
-        }, 800);
+        }
     };
 
     return (

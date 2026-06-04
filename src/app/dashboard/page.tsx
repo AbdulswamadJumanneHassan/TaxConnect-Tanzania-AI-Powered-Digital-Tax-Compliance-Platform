@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
     LayoutDashboard,
@@ -12,12 +14,55 @@ import {
     ArrowUpRight,
     PlusCircle,
     FileText,
-    BadgeCheck
+    BadgeCheck,
+    LogOut
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import Link from "next/link";
 
+import { JWTPayload } from "@/lib/auth";
+
 export default function Dashboard() {
+    const router = useRouter();
+    const [user, setUser] = useState<JWTPayload | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchSession = async () => {
+            try {
+                const res = await fetch("/api/auth/session");
+                if (res.ok) {
+                    const data = await res.json();
+                    setUser(data.user);
+                } else {
+                    router.push("/login");
+                }
+            } catch (error) {
+                console.error("Failed to fetch session", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchSession();
+    }, [router]);
+
+    const handleLogout = async () => {
+        try {
+            await fetch("/api/auth/logout", { method: "POST" });
+            router.push("/");
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+                <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
     return (
         <main className="min-h-screen bg-slate-50 flex">
             {/* Sidebar */}
@@ -44,6 +89,14 @@ export default function Dashboard() {
                             {item.label}
                         </button>
                     ))}
+
+                    <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-red-500 hover:bg-red-50 transition-all mt-8"
+                    >
+                        <LogOut className="w-5 h-5" />
+                        Ondoka
+                    </button>
                 </nav>
 
                 <div className="p-4 border-t border-slate-100">
@@ -65,11 +118,11 @@ export default function Dashboard() {
                         </button>
                         <div className="flex items-center gap-3 pl-4 border-l border-slate-100">
                             <div className="text-right">
-                                <p className="text-xs font-bold text-slate-900 leading-none">Juma Haruna</p>
-                                <p className="text-[10px] text-slate-400">Haruna Clothing</p>
+                                <p className="text-xs font-bold text-slate-900 leading-none">{user?.ownerName || "Mtumiaji"}</p>
+                                <p className="text-[10px] text-slate-400">{user?.businessName || "Biashara"}</p>
                             </div>
                             <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-bold">
-                                JH
+                                {user?.ownerName?.substring(0, 2).toUpperCase() || "MT"}
                             </div>
                         </div>
                     </div>

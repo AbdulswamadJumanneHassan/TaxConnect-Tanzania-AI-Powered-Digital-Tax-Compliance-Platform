@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Globe, LogIn } from "lucide-react";
+import { Menu, X, Globe, LogIn, LogOut, LayoutDashboard } from "lucide-react";
 import { Logo } from "./Logo";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
     { name: "Huduma", enName: "Services", href: "#features" },
@@ -13,7 +14,10 @@ const navLinks = [
     { name: "Zawadi", enName: "Rewards", href: "#rewards" },
 ];
 
-export function Navbar() {
+import { JWTPayload } from "@/lib/auth";
+
+export function Navbar({ user }: { user?: JWTPayload | null }) {
+    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [language, setLanguage] = useState<"sw" | "en">("sw");
@@ -30,12 +34,22 @@ export function Navbar() {
         setLanguage(language === "sw" ? "en" : "sw");
     };
 
+    const handleLogout = async () => {
+        try {
+            await fetch("/api/auth/logout", { method: "POST" });
+            router.refresh();
+            router.push("/");
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
+    };
+
     return (
         <nav
-            className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled 
-                ? "py-3 bg-slate-950/80 backdrop-blur-md border-b border-slate-800" 
+            className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
+                ? "py-3 bg-slate-950/80 backdrop-blur-md border-b border-slate-800"
                 : "py-5 bg-transparent"
-            }`}
+                }`}
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
                 <Logo />
@@ -61,13 +75,32 @@ export function Navbar() {
                             {language === "sw" ? "EN" : "SW"}
                         </button>
 
-                        <Link
-                            href="/login"
-                            className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all duration-200 flex items-center gap-2"
-                        >
-                            <LogIn className="w-4 h-4" />
-                            {language === "sw" ? "Ingia" : "Login"}
-                        </Link>
+                        {user ? (
+                            <div className="flex items-center gap-4">
+                                <Link
+                                    href="/dashboard"
+                                    className="text-sm font-semibold text-slate-300 hover:text-blue-400 transition-colors flex items-center gap-2"
+                                >
+                                    <LayoutDashboard className="w-4 h-4" />
+                                    {language === "sw" ? "Dashboard" : "Dashboard"}
+                                </Link>
+                                <button
+                                    onClick={handleLogout}
+                                    className="px-5 py-2.5 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-slate-700 transition-all duration-200 flex items-center gap-2"
+                                >
+                                    <LogOut className="w-4 h-4" />
+                                    {language === "sw" ? "Ondoka" : "Logout"}
+                                </button>
+                            </div>
+                        ) : (
+                            <Link
+                                href="/login"
+                                className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all duration-200 flex items-center gap-2"
+                            >
+                                <LogIn className="w-4 h-4" />
+                                {language === "sw" ? "Ingia" : "Login"}
+                            </Link>
+                        )}
                     </div>
                 </div>
 
@@ -108,12 +141,33 @@ export function Navbar() {
                                     {language === "sw" ? link.name : link.enName}
                                 </Link>
                             ))}
-                            <Link
-                                href="/login"
-                                className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all"
-                            >
-                                {language === "sw" ? "Ingia Sasa" : "Login Now"}
-                            </Link>
+                            {user ? (
+                                <>
+                                    <Link
+                                        href="/dashboard"
+                                        onClick={() => setIsOpen(false)}
+                                        className="text-lg font-medium py-2 border-b border-slate-800 text-slate-300 hover:text-blue-400 transition-colors flex items-center gap-2"
+                                    >
+                                        <LayoutDashboard className="w-5 h-5" />
+                                        Dashboard
+                                    </Link>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="mt-4 px-6 py-3 bg-slate-800 text-white text-center font-bold rounded-lg hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                                    >
+                                        <LogOut className="w-5 h-5" />
+                                        {language === "sw" ? "Ondoka" : "Logout"}
+                                    </button>
+                                </>
+                            ) : (
+                                <Link
+                                    href="/login"
+                                    onClick={() => setIsOpen(false)}
+                                    className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all"
+                                >
+                                    {language === "sw" ? "Ingia Sasa" : "Login Now"}
+                                </Link>
+                            )}
                         </div>
                     </motion.div>
                 )}

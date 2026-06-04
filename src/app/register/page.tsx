@@ -1,20 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, User, Building, ShieldCheck, HelpCircle } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 
 export default function RegisterPage() {
+    const router = useRouter();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         ownerName: "",
         businessName: "",
+        email: "",
+        password: "",
         category: "",
         location: "",
         estRevenue: "",
     });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const nextStep = () => setStep(step + 1);
     const prevStep = () => setStep(step - 1);
@@ -69,6 +75,24 @@ export default function RegisterPage() {
                                             placeholder="Mf. Haruna Clothing Store"
                                             className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                                             onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 block">Barua Pepe</label>
+                                        <input
+                                            type="email"
+                                            placeholder="name@example.com"
+                                            className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 block">Neno la Siri</label>
+                                        <input
+                                            type="password"
+                                            placeholder="••••••••"
+                                            className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                         />
                                     </div>
                                     <button
@@ -140,6 +164,12 @@ export default function RegisterPage() {
                                 <h2 className="text-3xl font-bold mb-2 text-slate-900">Wasifu wa Kodi</h2>
                                 <p className="text-slate-500 mb-8">Hongera! Tumetengeneza wasifu wako wa kodi.</p>
 
+                                {error && (
+                                    <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm">
+                                        {error}
+                                    </div>
+                                )}
+
                                 <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 mb-8">
                                     <h4 className="font-bold mb-4 flex items-center gap-2">
                                         <HelpCircle className="w-4 h-4 text-primary" /> Unachopaswa Kujua:
@@ -160,12 +190,44 @@ export default function RegisterPage() {
                                     </ul>
                                 </div>
 
-                                <Link
-                                    href="/dashboard"
-                                    className="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
+                                <button
+                                    type="button"
+                                    onClick={async () => {
+                                        setError("");
+                                        if (!formData.ownerName || !formData.businessName || !formData.email || !formData.password || !formData.category) {
+                                            setError("Tafadhali jaza taarifa zote muhimu kabla ya kuendelea.");
+                                            return;
+                                        }
+
+                                        setLoading(true);
+                                        try {
+                                            const response = await fetch("/api/auth/register", {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/json",
+                                                },
+                                                body: JSON.stringify(formData),
+                                            });
+
+                                            const data = await response.json();
+
+                                            if (!response.ok) {
+                                                setError(data.error || "Tafadhali jaribu tena");
+                                                setLoading(false);
+                                                return;
+                                            }
+
+                                            router.push("/dashboard");
+                                        } catch (error) {
+                                            setError("Tatizo la mtandao. Jaribu tena.");
+                                            setLoading(false);
+                                        }
+                                    }}
+                                    disabled={loading}
+                                    className="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    Maliza & Fungua Dashboard
-                                </Link>
+                                    {loading ? "Inasajili..." : "Maliza & Fungua Dashboard"}
+                                </button>
                             </motion.div>
                         )}
                     </AnimatePresence>

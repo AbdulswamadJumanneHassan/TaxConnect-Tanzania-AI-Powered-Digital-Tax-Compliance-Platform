@@ -37,7 +37,7 @@ export function HeroMinimal() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-400/30 bg-blue-500/10 mb-8 backdrop-blur-sm"
           >
             <Code2 className="w-4 h-4 text-blue-400" />
-            <span className="text-sm font-medium text-blue-200">Tanzania's Tax Platform</span>
+            <span className="text-sm font-medium text-blue-200">Tanzania&apos;s Tax Platform</span>
           </motion.div>
 
           {/* Main Heading */}
