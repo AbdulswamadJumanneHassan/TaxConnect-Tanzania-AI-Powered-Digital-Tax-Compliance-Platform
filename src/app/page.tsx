@@ -8,9 +8,6 @@ import { TanzaniaInnovation } from "@/components/TanzaniaInnovation";
 import { DashboardPreview } from "@/components/DashboardPreview";
 import { ImpactBenefits } from "@/components/ImpactBenefits";
 import { SecurityData } from "@/components/SecurityData";
-import { FeaturesMinimal } from "@/components/FeaturesMinimal";
-import { ShowcaseMinimal } from "@/components/ShowcaseMinimal";
-import { PricingMinimal } from "@/components/PricingMinimal";
 import { CTAMinimal } from "@/components/CTAMinimal";
 import { AIAssistant } from "@/components/AIAssistant";
 import { Footer } from "@/components/Footer";
@@ -31,9 +28,6 @@ export default async function Home() {
       <DashboardPreview />
       <ImpactBenefits />
       <SecurityData />
-      <FeaturesMinimal />
-      <ShowcaseMinimal />
-      <PricingMinimal />
       <CTAMinimal />
       <AIAssistant />
       <Footer />
