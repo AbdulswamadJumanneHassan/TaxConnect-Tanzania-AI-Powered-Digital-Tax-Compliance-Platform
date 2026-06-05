@@ -56,14 +56,14 @@ export function Footer() {
                             </li>
                             <li className="flex items-center gap-3">
                                 <Mail className="w-4 h-4 text-blue-400" />
-                                <span>msaada@smarttax.co.tz</span>
+                                <span>msaada@taxconnect.co.tz</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
                 <div className="pt-12 border-t border-slate-800 text-center text-slate-600 text-xs">
-                    <p>&copy; {new Date().getFullYear()} Smart Tax Tanzania. Haki zote zimehifadhiwa.</p>
+                    <p>&copy; {new Date().getFullYear()} TaxConnect Tanzania. Haki zote zimehifadhiwa.</p>
                 </div>
             </div>
         </footer>
