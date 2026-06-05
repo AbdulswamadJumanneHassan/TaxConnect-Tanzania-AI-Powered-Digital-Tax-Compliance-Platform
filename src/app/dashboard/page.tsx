@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
     LayoutDashboard,
-    Receipt,
+    Receipt as ReceiptIcon,
     Wallet,
     Award,
     Settings,
@@ -15,35 +15,60 @@ import {
     PlusCircle,
     FileText,
     BadgeCheck,
-    LogOut
+    LogOut,
+    Eye,
+    X
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import Link from "next/link";
+import { ReceiptModal } from "@/components/ReceiptModal";
+import { DigitalReceipt } from "@/components/DigitalReceipt";
 
 import { JWTPayload } from "@/lib/auth";
+import { StoredReceipt } from "@/lib/receipt-store";
 
 export default function Dashboard() {
     const router = useRouter();
     const [user, setUser] = useState<JWTPayload | null>(null);
+    const [receipts, setReceipts] = useState<StoredReceipt[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedReceipt, setSelectedReceipt] = useState<StoredReceipt | null>(null);
+
+    const fetchSession = async () => {
+        try {
+            const res = await fetch("/api/auth/session");
+            if (res.ok) {
+                const data = await res.json();
+                setUser(data.user);
+            } else {
+                router.push("/login");
+            }
+        } catch (error) {
+            console.error("Failed to fetch session", error);
+        }
+    };
+
+    const fetchReceipts = async () => {
+        try {
+            const res = await fetch("/api/receipts");
+            if (res.ok) {
+                const data = await res.json();
+                setReceipts(data.receipts);
+            }
+        } catch (error) {
+            console.error("Failed to fetch receipts", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchSession = async () => {
-            try {
-                const res = await fetch("/api/auth/session");
-                if (res.ok) {
-                    const data = await res.json();
-                    setUser(data.user);
-                } else {
-                    router.push("/login");
-                }
-            } catch (error) {
-                console.error("Failed to fetch session", error);
-            } finally {
-                setLoading(false);
-            }
+        const init = async () => {
+            await fetchSession();
+            await fetchReceipts();
         };
-        fetchSession();
+        init();
     }, [router]);
 
     const handleLogout = async () => {
@@ -54,6 +79,20 @@ export default function Dashboard() {
             console.error("Logout failed", error);
         }
     };
+
+    // Calculate stats
+    const today = new Date().toISOString().split("T")[0];
+    const dailySales = receipts
+        .filter(r => r.date.startsWith(today))
+        .reduce((sum, r) => sum + r.total, 0);
+
+    const monthlyReceipts = receipts.filter(r => {
+        const rDate = new Date(r.date);
+        const now = new Date();
+        return rDate.getMonth() === now.getMonth() && rDate.getFullYear() === now.getFullYear();
+    }).length;
+
+    const estimatedTax = dailySales * 0.05; // 5% flat estimation for demo
 
     if (loading) {
         return (
@@ -74,7 +113,7 @@ export default function Dashboard() {
                 <nav className="flex-1 p-4 space-y-2">
                     {[
                         { icon: LayoutDashboard, label: "Dashboard", active: true },
-                        { icon: Receipt, label: "Risiti Zangu" },
+                        { icon: ReceiptIcon, label: "Risiti Zangu" },
                         { icon: Wallet, label: "Miamala" },
                         { icon: Award, label: "Tuzo & Beji" },
                         { icon: FileText, label: "Ripoti" },
@@ -103,7 +142,7 @@ export default function Dashboard() {
                     <div className="bg-primary/5 p-4 rounded-2xl">
                         <p className="text-[10px] uppercase font-bold text-primary mb-1">Msaada wa AI</p>
                         <p className="text-xs text-slate-600 mb-3">Una swali la kodi leo?</p>
-                        <Link href="#" className="text-xs font-bold text-primary hover:underline">Uliza AI sasa</Link>
+                        <Link href="/#chat" className="text-xs font-bold text-primary hover:underline">Uliza AI sasa</Link>
                     </div>
                 </div>
             </aside>
@@ -132,10 +171,10 @@ export default function Dashboard() {
                     {/* Stats Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         {[
-                            { label: "Mauzo ya Leo", value: "254,000 TZS", icon: Wallet, trend: "+12%" },
-                            { label: "Risiti za Mwezi", value: "128", icon: Receipt, trend: "+5%" },
-                            { label: "Kodi Inayokadiriwa", value: "45,000 TZS", icon: FileText, trend: "-2%" },
-                            { label: "Pointi za Tuzo", value: "850", icon: Award, trend: "+50" },
+                            { label: "Mauzo ya Leo", value: `${dailySales.toLocaleString()} TZS`, icon: Wallet, trend: "+100%" },
+                            { label: "Risiti za Mwezi", value: monthlyReceipts.toString(), icon: ReceiptIcon, trend: `+${monthlyReceipts}` },
+                            { label: "Kodi Inayokadiriwa", value: `${estimatedTax.toLocaleString()} TZS`, icon: FileText, trend: "5%" },
+                            { label: "Pointi za Tuzo", value: (receipts.length * 10).toString(), icon: Award, trend: "+10" },
                         ].map((stat, i) => (
                             <motion.div
                                 key={i}
@@ -148,7 +187,7 @@ export default function Dashboard() {
                                     <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400">
                                         <stat.icon className="w-6 h-6" />
                                     </div>
-                                    <span className={`text-xs font-bold px-2 py-1 rounded-lg ${stat.trend.startsWith("+") ? "bg-green-50 text-green-500" : "bg-red-50 text-red-500"}`}>
+                                    <span className={`text-xs font-bold px-2 py-1 rounded-lg ${stat.trend.startsWith("+") ? "bg-green-50 text-green-500" : "bg-blue-50 text-blue-500"}`}>
                                         {stat.trend}
                                     </span>
                                 </div>
@@ -159,60 +198,47 @@ export default function Dashboard() {
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Main Chart/Insights Area */}
+                        {/* Main Area */}
                         <div className="lg:col-span-2 space-y-8">
-                            <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-                                <div className="flex justify-between items-center mb-8">
-                                    <div>
-                                        <h3 className="text-xl font-bold">Mwenendo wa Mauzo</h3>
-                                        <p className="text-sm text-slate-400">Ukuaji wa biashara mwezi huu</p>
-                                    </div>
-                                    <button className="flex items-center gap-2 text-primary font-bold text-sm">
-                                        Wiki Hii <TrendingUp className="w-4 h-4" />
-                                    </button>
-                                </div>
-
-                                <div className="h-64 flex items-end justify-between gap-2">
-                                    {[40, 25, 65, 45, 90, 55, 75].map((h, i) => (
-                                        <div key={i} className="flex-1 flex flex-col items-center gap-2">
-                                            <motion.div
-                                                initial={{ height: 0 }}
-                                                animate={{ height: `${h}%` }}
-                                                transition={{ duration: 1, delay: i * 0.1 }}
-                                                className="w-full bg-slate-100 rounded-lg relative group cursor-pointer"
-                                            >
-                                                <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
-                                            </motion.div>
-                                            <span className="text-[10px] text-slate-400 font-bold uppercase">Siku {i + 1}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
                             <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
                                 <div className="flex justify-between items-center mb-6">
                                     <h3 className="text-xl font-bold">Risiti za Karibuni</h3>
                                     <Link href="#" className="text-primary text-sm font-bold">Tazama Zote</Link>
                                 </div>
                                 <div className="space-y-4">
-                                    {[
-                                        { name: "Haruna Msaki", amount: "45,000 TZS", time: "Dakika 10 zilizopita" },
-                                        { name: "Fatuma Bakari", amount: "12,500 TZS", time: "Saa 1 lililopita" },
-                                        { name: "Salehe Juma", amount: "89,000 TZS", time: "Saa 3 zilizopita" },
-                                    ].map((r, i) => (
-                                        <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
-                                            <div className="flex items-center gap-4">
-                                                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-primary border border-slate-200">
-                                                    <Receipt className="w-5 h-5" />
+                                    {receipts.length === 0 ? (
+                                        <div className="text-center py-12 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-100">
+                                            <p className="text-slate-400 text-sm">Hujatoa risiti yoyote leo. Anza sasa!</p>
+                                        </div>
+                                    ) : (
+                                        receipts.slice(0, 5).map((r, i) => (
+                                            <div key={r.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl hover:bg-slate-100 transition-colors group">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-primary border border-slate-200">
+                                                        <ReceiptIcon className="w-5 h-5" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm font-bold">{r.customerName}</p>
+                                                        <p className="text-[10px] text-slate-400 uppercase font-bold">
+                                                            {new Date(r.date).toLocaleTimeString('sw-TZ', { hour: '2-digit', minute: '2-digit' })}
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p className="text-sm font-bold">{r.name}</p>
-                                                    <p className="text-[10px] text-slate-400 uppercase font-bold">{r.time}</p>
+                                                <div className="flex items-center gap-6">
+                                                    <div className="text-right">
+                                                        <p className="font-bold text-sm">{r.total.toLocaleString()} TZS</p>
+                                                        <p className="text-[10px] text-primary uppercase font-bold">{r.paymentMethod}</p>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => setSelectedReceipt(r)}
+                                                        className="p-2 bg-white rounded-lg text-slate-400 opacity-0 group-hover:opacity-100 transition-all hover:text-primary"
+                                                    >
+                                                        <Eye className="w-4 h-4" />
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <p className="font-bold text-sm">{r.amount}</p>
-                                        </div>
-                                    ))}
+                                        ))
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -255,7 +281,10 @@ export default function Dashboard() {
                             </div>
 
                             {/* Add Receipt Button */}
-                            <button className="w-full py-6 bg-white border-2 border-dashed border-primary/20 rounded-3xl text-primary font-bold flex flex-col items-center gap-3 hover:bg-primary/5 transition-all">
+                            <button
+                                onClick={() => setIsModalOpen(true)}
+                                className="w-full py-6 bg-white border-2 border-dashed border-primary/20 rounded-3xl text-primary font-bold flex flex-col items-center gap-3 hover:bg-primary/5 transition-all"
+                            >
                                 <PlusCircle className="w-10 h-10" />
                                 Tengeneza Risiti Mpya
                             </button>
@@ -263,6 +292,50 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
+
+            {/* Modals */}
+            <ReceiptModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSuccess={fetchReceipts}
+            />
+
+            <AnimatePresence>
+                {selectedReceipt && (
+                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setSelectedReceipt(null)}
+                            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+                        />
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="relative w-full max-w-sm max-h-[90vh] overflow-y-auto rounded-3xl"
+                        >
+                            <button
+                                onClick={() => setSelectedReceipt(null)}
+                                className="absolute top-4 right-4 z-10 p-2 bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                            <DigitalReceipt
+                                receipt={{
+                                    id: selectedReceipt.id,
+                                    customer: selectedReceipt.customerName,
+                                    items: selectedReceipt.items,
+                                    total: selectedReceipt.total,
+                                    date: new Date(selectedReceipt.date).toLocaleString(),
+                                    qrValue: selectedReceipt.qrCode
+                                }}
+                            />
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </main>
     );
 }

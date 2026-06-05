@@ -6,7 +6,7 @@ const protectedRoutes = ["/dashboard"];
 // Add paths that should be accessible only to guests
 const guestRoutes = ["/login", "/register"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     const path = request.nextUrl.pathname;
     const isProtected = protectedRoutes.some((route) => path.startsWith(route));
     const isGuest = guestRoutes.some((route) => path.startsWith(route));
