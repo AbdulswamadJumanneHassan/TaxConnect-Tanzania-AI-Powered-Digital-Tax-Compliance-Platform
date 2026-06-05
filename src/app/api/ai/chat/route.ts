@@ -1,10 +1,3 @@
-import { createOpenAI } from "@ai-sdk/openai";
-
-const githubModels = createOpenAI({
-  baseURL: "https://models.inference.ai.azure.com",
-  apiKey: process.env.GITHUB_MODELS_TOKEN,
-  compatibility: "strict", // Force use of /chat/completions
-});
 
 export async function POST(request: Request) {
   try {
