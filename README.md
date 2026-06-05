@@ -1,35 +1,44 @@
-# TaxConnect Tanzania
+# TaxConnect Tanzania: AI-Powered Digital Tax Compliance Platform
 
-**AI-Powered Digital Tax Compliance for Every Business**
+TaxConnect Tanzania is an innovative AI-powered digital tax compliance platform designed to support the Tanzania Revenue Authority (TRA), businesses, SMEs, informal traders, and taxpayers in achieving efficient, transparent, and intelligent tax management.
 
-TaxConnect Tanzania is a production-grade digital platform designed to simplify tax compliance and accelerate business growth for Tanzanian entrepreneurs and traders.
+The platform leverages Artificial Intelligence (AI), digital payment integration, real-time analytics, and automated compliance monitoring to simplify tax processes, improve taxpayer engagement, and enhance revenue collection across Tanzania.
 
-## Core Features
+## Key Features
+- 🤖 **AI-Powered Tax Assistant (Swahili & English)**
+- 📊 **Smart Tax Compliance Monitoring**
+- 💰 **Digital Tax Wallet**
+- 📱 **Mobile Money Integration** (M-Pesa, Airtel Money, Tigo Pesa, HaloPesa)
+- 🧾 **Digital Receipt Management**
+- 🔔 **Automated Tax Reminders & Notifications**
+- 📈 **Revenue Analytics & Forecasting**
+- 🚨 **Fraud and Tax Evasion Detection**
+- 🏢 **SME and Business Compliance Dashboard**
+- 🏛️ **TRA Administrative Dashboard**
 
-- **Smart Digital Receipts**: Generate TRA-compliant digital receipts with unique QR codes for instant verification.
-- **AI Tax Assistant**: A Swahili-speaking AI assistant that answers tax-related questions and provides guidance.
-- **Trader Dashboard**: Get a real-time overview of your business performance, sales metrics, and estimated tax obligations.
-- **M-Pesa Integration**: Seamlessly connect your business payments to your tax records.
+## Project Objectives
+- Increase tax compliance among businesses and individuals.
+- Simplify tax filing and payment processes.
+- Support the digital transformation of Tanzania's tax ecosystem.
+- Reduce tax evasion and revenue leakages.
+- Provide real-time insights for informed decision-making.
+- Improve taxpayer education and engagement through AI.
 
-## Tech Stack
+## Target Users
+- Tanzania Revenue Authority (TRA)
+- Small and Medium Enterprises (SMEs)
+- Informal Sector Businesses
+- Individual Taxpayers
+- Local Government Authorities
+- Financial Institutions and Mobile Money Providers
 
-- **Frontend**: Next.js 15+ (App Router), React 19, Tailwind CSS 4, Framer Motion.
-- **Authentication**: JWT-based session management with HTTP-only cookies.
-- **Icons**: Lucide React.
-- **Animations**: Framer Motion for premium UI transitions.
+## Vision
+To create a smarter, more inclusive, and AI-driven tax ecosystem that enhances compliance, promotes transparency, and strengthens revenue collection for Tanzania's sustainable economic growth.
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Localization
-
-Supported languages:
-- Kiswahili (Primary)
-- English
+## Innovation Focus Areas
+- Artificial Intelligence for Tax Compliance
+- Mobile Money and Digital Payments
+- Revenue Analytics and Forecasting
+- Fraud Detection and Risk Assessment
+- Digital Taxpayer Services
+- Government Digital Transformation
