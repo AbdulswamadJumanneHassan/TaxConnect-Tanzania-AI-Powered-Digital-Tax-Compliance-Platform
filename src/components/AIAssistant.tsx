@@ -43,6 +43,9 @@ export function AIAssistant() {
         setInput("");
         setIsLoading(true);
 
+        // Add a placeholder bot message that we'll update
+        setMessages((prev) => [...prev, { role: "bot", content: "" }]);
+
         try {
             const response = await fetch("/api/ai/chat", {
                 method: "POST",
@@ -52,21 +55,38 @@ export function AIAssistant() {
                 body: JSON.stringify({ question: input }),
             });
 
-            const data = await response.json();
-            const botReply = data.answer || data.error || "Samahani, jaribu tena.";
+            if (!response.ok) throw new Error("Failed to fetch");
 
-            setMessages((prev) => [
-                ...prev,
-                { role: "bot", content: botReply },
-            ]);
+            const reader = response.body?.getReader();
+            if (!reader) throw new Error("No reader available");
+
+            const decoder = new TextDecoder();
+            let accumulatedContent = "";
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                accumulatedContent += chunk;
+
+                // Update the last message (the bot message we just added)
+                setMessages((prev) => {
+                    const next = [...prev];
+                    next[next.length - 1] = { ...next[next.length - 1], content: accumulatedContent };
+                    return next;
+                });
+            }
         } catch (error) {
-            setMessages((prev) => [
-                ...prev,
-                {
+            console.error("Chat error:", error);
+            setMessages((prev) => {
+                const next = [...prev];
+                next[next.length - 1] = {
                     role: "bot",
-                    content: "Tatizo la mtandao. Jaribu tena.",
-                },
-            ]);
+                    content: "Samahani, kuna tatizo limejitokeza. Jaribu tena."
+                };
+                return next;
+            });
         } finally {
             setIsLoading(false);
         }
@@ -125,14 +145,14 @@ export function AIAssistant() {
                                     className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
                                 >
                                     <div className={`max-w-[80%] p-4 rounded-2xl text-sm ${m.role === "user"
-                                            ? "bg-blue-600 text-white font-semibold rounded-tr-none"
-                                            : "bg-slate-700 text-slate-100 rounded-tl-none"
+                                        ? "bg-blue-600 text-white font-semibold rounded-tr-none"
+                                        : "bg-slate-700 text-slate-100 rounded-tl-none"
                                         }`}>
                                         {m.content}
                                     </div>
                                 </motion.div>
                             ))}
-                            
+
                             {/* Loading indicator */}
                             {isLoading && (
                                 <motion.div
@@ -149,7 +169,7 @@ export function AIAssistant() {
                                     </div>
                                 </motion.div>
                             )}
-                            
+
                             <div ref={messagesEndRef} />
                         </div>
 

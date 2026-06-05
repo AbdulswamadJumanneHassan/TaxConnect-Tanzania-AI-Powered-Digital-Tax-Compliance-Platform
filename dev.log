@@ -1,0 +1,141 @@
+
+> taxconnect-tanzania@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.170:3000
+- Environments: .env
+✓ Ready in 3.5s
+
+ GET / 200 in 3.7s (next.js: 413ms, proxy.ts: 1222ms, application-code: 2.1s)
+ GET / 200 in 3.8s (next.js: 761ms, proxy.ts: 1218ms, application-code: 1799ms)
+ POST /api/ai/chat 200 in 2.2s (next.js: 882ms, application-code: 1314ms)
+Error [AI_APICallError]: Requested API is currently not supported
+    at ignore-listed frames {
+  cause: undefined,
+  url: 'https://models.inference.ai.azure.com/responses',
+  requestBodyValues: {
+    model: 'gpt-4o',
+    input: [ [Object], [Object] ],
+    temperature: undefined,
+    top_p: undefined,
+    max_output_tokens: undefined,
+    conversation: undefined,
+    max_tool_calls: undefined,
+    metadata: undefined,
+    parallel_tool_calls: undefined,
+    previous_response_id: undefined,
+    store: undefined,
+    user: undefined,
+    instructions: undefined,
+    service_tier: undefined,
+    include: undefined,
+    prompt_cache_key: undefined,
+    prompt_cache_retention: undefined,
+    safety_identifier: undefined,
+    top_logprobs: undefined,
+    truncation: undefined,
+    tools: undefined,
+    tool_choice: undefined,
+    stream: true
+  },
+  statusCode: 404,
+  responseHeaders: {
+    'azureml-served-by-cluster': 'vienna-southafricanorth-02',
+    connection: 'keep-alive',
+    'content-encoding': 'gzip',
+    'content-type': 'application/json; charset=utf-8',
+    date: 'Fri, 05 Jun 2026 12:11:37 GMT',
+    'request-context': 'appId=',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+    'transfer-encoding': 'chunked',
+    vary: 'Accept-Encoding',
+    'x-content-type-options': 'nosniff',
+    'x-envoy-upstream-service-time': '388',
+    'x-ms-error-code': 'api_not_supported',
+    'x-request-time': '0.391'
+  },
+  responseBody: '{"error":{"code":"api_not_supported","message":"Requested API is currently not supported","details":"Requested API is currently not supported"}}',
+  isRetryable: false,
+  data: {
+    error: {
+      message: 'Requested API is currently not supported',
+      code: 'api_not_supported'
+    }
+  }
+}
+Error [AI_APICallError]: Requested API is currently not supported
+    at ignore-listed frames {
+  cause: undefined,
+  url: 'https://models.inference.ai.azure.com/responses',
+  requestBodyValues: {
+    model: 'gpt-4o',
+    input: [ [Object], [Object] ],
+    temperature: undefined,
+    top_p: undefined,
+    max_output_tokens: undefined,
+    conversation: undefined,
+    max_tool_calls: undefined,
+    metadata: undefined,
+    parallel_tool_calls: undefined,
+    previous_response_id: undefined,
+    store: undefined,
+    user: undefined,
+    instructions: undefined,
+    service_tier: undefined,
+    include: undefined,
+    prompt_cache_key: undefined,
+    prompt_cache_retention: undefined,
+    safety_identifier: undefined,
+    top_logprobs: undefined,
+    truncation: undefined,
+    tools: undefined,
+    tool_choice: undefined,
+    stream: true
+  },
+  statusCode: 404,
+  responseHeaders: {
+    'azureml-served-by-cluster': 'vienna-southafricanorth-02',
+    connection: 'keep-alive',
+    'content-encoding': 'gzip',
+    'content-type': 'application/json; charset=utf-8',
+    date: 'Fri, 05 Jun 2026 12:12:10 GMT',
+    'request-context': 'appId=',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+    'transfer-encoding': 'chunked',
+    vary: 'Accept-Encoding',
+    'x-content-type-options': 'nosniff',
+    'x-envoy-upstream-service-time': '395',
+    'x-ms-error-code': 'api_not_supported',
+    'x-request-time': '0.399'
+  },
+  responseBody: '{"error":{"code":"api_not_supported","message":"Requested API is currently not supported","details":"Requested API is currently not supported"}}',
+  isRetryable: false,
+  data: {
+    error: {
+      message: 'Requested API is currently not supported',
+      code: 'api_not_supported'
+    }
+  }
+}
+ POST /api/ai/chat 200 in 3.3s (next.js: 65ms, application-code: 3.2s)
+ GET / 200 in 1993ms (next.js: 426ms, proxy.ts: 688ms, application-code: 879ms)
+ GET / 200 in 1990ms (next.js: 720ms, proxy.ts: 663ms, application-code: 607ms)
+ GET / 200 in 746ms (next.js: 36ms, proxy.ts: 62ms, application-code: 648ms)
+ GET / 200 in 716ms (next.js: 171ms, proxy.ts: 29ms, application-code: 516ms)
+ GET / 200 in 695ms (next.js: 28ms, proxy.ts: 88ms, application-code: 579ms)
+ GET / 200 in 696ms (next.js: 159ms, proxy.ts: 68ms, application-code: 469ms)
+ GET / 200 in 684ms (next.js: 36ms, proxy.ts: 63ms, application-code: 585ms)
+ GET / 200 in 661ms (next.js: 103ms, proxy.ts: 57ms, application-code: 502ms)
+ GET / 200 in 576ms (next.js: 43ms, proxy.ts: 56ms, application-code: 477ms)
+ GET / 200 in 558ms (next.js: 151ms, proxy.ts: 51ms, application-code: 355ms)
+ GET / 200 in 252ms (next.js: 21ms, proxy.ts: 39ms, application-code: 192ms)
+ GET / 200 in 245ms (next.js: 95ms, proxy.ts: 29ms, application-code: 121ms)
+ POST /api/ai/chat 200 in 4.2s (next.js: 381ms, application-code: 3.8s)
+ GET / 200 in 746ms (next.js: 19ms, proxy.ts: 30ms, application-code: 697ms)
+ POST /api/ai/chat 200 in 5.5s (next.js: 19ms, application-code: 5.5s)
+ POST /api/ai/chat 200 in 4.4s (next.js: 21ms, application-code: 4.4s)
+ POST /api/ai/chat 200 in 3.6s (next.js: 7ms, application-code: 3.6s)
+ POST /api/ai/chat 200 in 4.5s (next.js: 9ms, application-code: 4.5s)
+ POST /api/ai/chat 200 in 3.8s (next.js: 6ms, application-code: 3.8s)

@@ -1,44 +1,104 @@
-import { NextResponse } from "next/server";
+import { createOpenAI } from "@ai-sdk/openai";
 
-function getResponse(question: string) {
-  const normalized = question.toLowerCase();
-
-  if (normalized.includes("m-pesa") || normalized.includes("mpesa")) {
-    return "Unaweza kuunganisha M-Pesa Business kwa Smart Tax ili kupokea malipo ya haraka na kupata ripoti za mauzo kwa urahisi.";
-  }
-
-  if (normalized.includes("jisajili") || normalized.includes("sajili")) {
-    return "Jisajili kwa Smart Tax sasa, tutaandaa wasifu wako wa kodi na kukusaidia kufanya mahesabu ya TRA kwa biashara yako.";
-  }
-
-  if (normalized.includes("kod") || normalized.includes("tax")) {
-    return "Kodi ya biashara inategemea mapato yako. Tunashauri kuweka rekodi za mauzo na kutuma taarifa kwa TRA kwa wakati.";
-  }
-
-  if (normalized.includes("dashboard") || normalized.includes("dash")) {
-    return "Dashboard inaonyesha muhtasari wa mauzo, risiti za digitali, na taarifa za kodi kwa biashara yako.";
-  }
-
-  const responses = [
-    "Karibu! Smart Tax inasaidia biashara zako kwa kutoa msaada wa kodi kwa Kiswahili.",
-    "Kwa biashara ndogo, ni muhimu kuweka rekodi za mapato na kutumia risiti za digitali ili kuepuka matatizo ya TRA.",
-    "Tuma maswali yako kuhusu kodi, M-Pesa, au usajili na nitakusaidia kupata mwanga.",
-    "Hakikisha unaweka taarifa za mauzo kila mwezi ili uweze kulipa kodi kwa usahihi.",
-  ];
-
-  return responses[Math.floor(Math.random() * responses.length)];
-}
+const githubModels = createOpenAI({
+  baseURL: "https://models.inference.ai.azure.com",
+  apiKey: process.env.GITHUB_MODELS_TOKEN,
+  compatibility: "strict", // Force use of /chat/completions
+});
 
 export async function POST(request: Request) {
-  const body = await request.json();
-  const question = String(body.question || "").trim();
+  try {
+    const body = await request.json();
+    const question = String(body.question || "").trim();
 
-  if (!question) {
-    return NextResponse.json(
-      { error: "Tafadhali uliza swali kwanza" },
-      { status: 400 }
-    );
+    if (!question) {
+      return new Response(JSON.stringify({ error: "Tafadhali uliza swali kwanza" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const token = process.env.GITHUB_MODELS_TOKEN;
+
+    const response = await fetch("https://models.inference.ai.azure.com/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: `Wewe ni "Smart Tax AI Assistant", msaidizi wa kidijitali wa kodi kwa wafanyabiashara wa Tanzania. 
+            Lengo lako ni kusaidia watumiaji kuelewa:
+            1. Taratibu za kodi za TRA (Tanzania Revenue Authority).
+            2. Namna ya kusimamia mapato na matumizi ya biashara.
+            3. Kuunganisha mifumo ya malipo kama M-Pesa Business.
+            4. Kutumia risiti za kidijitali (Digital Receipts) kwa ufanisi.
+            
+            Zingatia:
+            - Tumia Kiswahili fasaha na rafiki kama lugha kuu.
+            - Kuwa mtaalamu na mwenye kutoa majibu ya vitendo (actionable).
+            - Majibu yawe mafupi na yenye kueleweka.
+            - Ikiwa swali halihusiani na kodi au biashara, jaribu kuelekeza mtumiaji kwenye huduma za Smart Tax kwa upole.`,
+          },
+          { role: "user", content: question },
+        ],
+        stream: true,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error?.message || "GitHub Models API error");
+    }
+
+    const reader = response.body?.getReader();
+    const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+
+    const stream = new ReadableStream({
+      async start(controller) {
+        while (true) {
+          const { done, value } = await reader!.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value);
+          const lines = chunk.split("\n");
+
+          for (const line of lines) {
+            if (line.startsWith("data: ")) {
+              const data = line.slice(6);
+              if (data === "[DONE]") continue;
+
+              try {
+                const json = JSON.parse(data);
+                const content = json.choices[0]?.delta?.content || "";
+                if (content) {
+                  controller.enqueue(encoder.encode(content));
+                }
+              } catch (e) {
+                // Ignore parse errors for incomplete chunks
+              }
+            }
+          }
+        }
+        controller.close();
+      },
+    });
+
+    return new Response(stream, {
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  } catch (error: any) {
+    console.error("AI Chat Route Error:", error);
+    const errorMessage = `Samahani, kuna tatizo la kiufundi: ${error.message || "Unknown Error"}. Jaribu tena baadae.`;
+
+    return new Response(errorMessage, {
+      status: 200,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
   }
-
-  return NextResponse.json({ answer: getResponse(question) });
 }
