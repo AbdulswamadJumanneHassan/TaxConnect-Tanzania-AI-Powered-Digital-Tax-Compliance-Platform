@@ -47,7 +47,7 @@ export function Navbar({ user }: { user?: JWTPayload | null }) {
     return (
         <nav
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-                ? "py-3 bg-slate-950/80 backdrop-blur-md border-b border-slate-800"
+                ? "py-3 bg-[#1A1A1A]/90 backdrop-blur-md border-b border-[#FFD700]/10"
                 : "py-5 bg-transparent"
                 }`}
         >
@@ -60,16 +60,16 @@ export function Navbar({ user }: { user?: JWTPayload | null }) {
                         <Link
                             key={link.name}
                             href={link.href}
-                            className="text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors duration-200"
+                            className="text-sm font-bold text-gray-400 hover:text-[#FFD700] transition-colors duration-200"
                         >
                             {language === "sw" ? link.name : link.enName}
                         </Link>
                     ))}
 
-                    <div className="flex items-center gap-4 ml-4">
+                    <div className="flex items-center gap-6 ml-4">
                         <button
                             onClick={toggleLanguage}
-                            className="flex items-center gap-1.5 text-sm font-semibold text-slate-400 hover:text-blue-400 transition-colors duration-200"
+                            className="flex items-center gap-1.5 text-xs font-black text-gray-500 hover:text-[#FFD700] transition-colors duration-200 uppercase tracking-widest"
                         >
                             <Globe className="w-4 h-4" />
                             {language === "sw" ? "EN" : "SW"}
@@ -77,10 +77,10 @@ export function Navbar({ user }: { user?: JWTPayload | null }) {
 
                         <button
                             onClick={user ? handleLogout : () => router.push("/login")}
-                            className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all duration-200 flex items-center gap-2"
+                            className="px-6 py-2.5 bg-[#FFD700] text-[#1A1A1A] text-xs font-black rounded-xl hover:scale-105 transition-all duration-200 flex items-center gap-2 shadow-lg shadow-yellow-500/10"
                         >
                             <LogIn className="w-4 h-4" />
-                            login
+                            LOGIN
                         </button>
                     </div>
                 </div>
@@ -89,13 +89,13 @@ export function Navbar({ user }: { user?: JWTPayload | null }) {
                 <div className="md:hidden flex items-center gap-4">
                     <button
                         onClick={toggleLanguage}
-                        className="p-2 text-slate-300"
+                        className="p-2 text-gray-400"
                     >
                         <Globe className="w-5 h-5" />
                     </button>
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="p-2 text-slate-300"
+                        className="p-2 text-gray-200"
                     >
                         {isOpen ? <X /> : <Menu />}
                     </button>
@@ -109,7 +109,7 @@ export function Navbar({ user }: { user?: JWTPayload | null }) {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        className="absolute top-full left-0 w-full bg-slate-950/95 backdrop-blur-md md:hidden border-t border-slate-800"
+                        className="absolute top-full left-0 w-full bg-[#1A1A1A]/95 backdrop-blur-md md:hidden border-t border-white/5"
                     >
                         <div className="flex flex-col p-6 gap-4">
                             {navLinks.map((link) => (
@@ -117,17 +117,17 @@ export function Navbar({ user }: { user?: JWTPayload | null }) {
                                     key={link.name}
                                     href={link.href}
                                     onClick={() => setIsOpen(false)}
-                                    className="text-lg font-medium py-2 border-b border-slate-800 text-slate-300 hover:text-blue-400 transition-colors"
+                                    className="text-lg font-bold py-3 border-b border-white/5 text-gray-300 hover:text-[#FFD700] transition-colors"
                                 >
                                     {language === "sw" ? link.name : link.enName}
                                 </Link>
                             ))}
                             <button
                                 onClick={user ? handleLogout : () => { setIsOpen(false); router.push("/login"); }}
-                                className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all flex items-center justify-center gap-2"
+                                className="mt-4 px-6 py-4 bg-[#FFD700] text-[#1A1A1A] text-center font-black rounded-2xl hover:scale-105 transition-all flex items-center justify-center gap-2"
                             >
                                 <LogIn className="w-5 h-5" />
-                                login
+                                LOGIN
                             </button>
                         </div>
                     </motion.div>

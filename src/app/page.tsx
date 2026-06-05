@@ -2,6 +2,7 @@ import { Navbar } from "@/components/Navbar";
 import { HeroMinimal } from "@/components/HeroMinimal";
 import { ProblemStatement } from "@/components/ProblemStatement";
 import { AITaxIntelligence } from "@/components/AITaxIntelligence";
+import { RegulatorCockpit } from "@/components/RegulatorCockpit";
 import { HowItWorks } from "@/components/HowItWorks";
 import { TRAAlignment } from "@/components/TRAAlignment";
 import { TanzaniaInnovation } from "@/components/TanzaniaInnovation";
@@ -22,6 +23,7 @@ export default async function Home() {
       <HeroMinimal />
       <ProblemStatement />
       <AITaxIntelligence />
+      <RegulatorCockpit />
       <HowItWorks />
       <TRAAlignment />
       <TanzaniaInnovation />
