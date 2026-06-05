@@ -75,32 +75,13 @@ export function Navbar({ user }: { user?: JWTPayload | null }) {
                             {language === "sw" ? "EN" : "SW"}
                         </button>
 
-                        {user ? (
-                            <div className="flex items-center gap-4">
-                                <Link
-                                    href="/dashboard"
-                                    className="text-sm font-semibold text-slate-300 hover:text-blue-400 transition-colors flex items-center gap-2"
-                                >
-                                    <LayoutDashboard className="w-4 h-4" />
-                                    {language === "sw" ? "Dashboard" : "Dashboard"}
-                                </Link>
-                                <button
-                                    onClick={handleLogout}
-                                    className="px-5 py-2.5 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-slate-700 transition-all duration-200 flex items-center gap-2"
-                                >
-                                    <LogOut className="w-4 h-4" />
-                                    {language === "sw" ? "Ondoka" : "Logout"}
-                                </button>
-                            </div>
-                        ) : (
-                            <Link
-                                href="/login"
-                                className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all duration-200 flex items-center gap-2"
-                            >
-                                <LogIn className="w-4 h-4" />
-                                {language === "sw" ? "Ingia" : "Login"}
-                            </Link>
-                        )}
+                        <button
+                            onClick={user ? handleLogout : () => router.push("/login")}
+                            className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all duration-200 flex items-center gap-2"
+                        >
+                            <LogIn className="w-4 h-4" />
+                            login
+                        </button>
                     </div>
                 </div>
 
@@ -141,33 +122,13 @@ export function Navbar({ user }: { user?: JWTPayload | null }) {
                                     {language === "sw" ? link.name : link.enName}
                                 </Link>
                             ))}
-                            {user ? (
-                                <>
-                                    <Link
-                                        href="/dashboard"
-                                        onClick={() => setIsOpen(false)}
-                                        className="text-lg font-medium py-2 border-b border-slate-800 text-slate-300 hover:text-blue-400 transition-colors flex items-center gap-2"
-                                    >
-                                        <LayoutDashboard className="w-5 h-5" />
-                                        Dashboard
-                                    </Link>
-                                    <button
-                                        onClick={handleLogout}
-                                        className="mt-4 px-6 py-3 bg-slate-800 text-white text-center font-bold rounded-lg hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
-                                    >
-                                        <LogOut className="w-5 h-5" />
-                                        {language === "sw" ? "Ondoka" : "Logout"}
-                                    </button>
-                                </>
-                            ) : (
-                                <Link
-                                    href="/login"
-                                    onClick={() => setIsOpen(false)}
-                                    className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all"
-                                >
-                                    {language === "sw" ? "Ingia Sasa" : "Login Now"}
-                                </Link>
-                            )}
+                            <button
+                                onClick={user ? handleLogout : () => { setIsOpen(false); router.push("/login"); }}
+                                className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center font-bold rounded-lg hover:shadow-lg hover:shadow-blue-500/40 transition-all flex items-center justify-center gap-2"
+                            >
+                                <LogIn className="w-5 h-5" />
+                                login
+                            </button>
                         </div>
                     </motion.div>
                 )}
