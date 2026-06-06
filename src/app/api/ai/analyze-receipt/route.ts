@@ -1,29 +1,61 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
-import { google } from "@ai-sdk/google";
-import { generateObject } from "ai";
-import { z } from "zod";
 
-// ---------- Schema ----------
-const ReceiptAnalysisSchema = z.object({
-    businessName: z.string().describe("Name of the business that issued the receipt"),
-    receiptNumber: z.string().describe("Receipt or invoice number"),
-    dateTime: z.string().describe("Date and time on the receipt in ISO-like format or as printed"),
-    amountPaid: z.number().describe("Total amount paid in TZS"),
-    vatAmount: z.number().describe("VAT amount in TZS, 0 if not present"),
-    tin: z.string().describe("Tax Identification Number (TIN) of the business, empty string if not found"),
-    category: z.string().describe("Transaction category, e.g. Restaurant/Food, Pharmacy, Hotel, Retail, Transport, Fuel, Other"),
-    anomalies: z.array(z.object({
-        type: z.enum(["MISSING_VAT", "MISSING_TIN", "INCORRECT_TAX_CALC", "SUSPICIOUS_AMOUNT", "INCOMPLETE_RECEIPT", "POTENTIAL_DUPLICATE"]),
-        description: z.string(),
-        severity: z.enum(["LOW", "MEDIUM", "HIGH"]),
-    })).describe("List of detected anomalies or compliance issues"),
-    recommendations: z.array(z.string()).describe("Corrective recommendations for each anomaly"),
-    complianceScore: z.number().min(0).max(100).describe("Overall compliance score from 0 (non-compliant) to 100 (fully compliant) based on TRA requirements"),
-    extractedText: z.string().describe("Raw text extracted from the receipt for reference"),
-});
+// ---------- Types ----------
+export interface ReceiptAnomaly {
+    type: "MISSING_VAT" | "MISSING_TIN" | "INCORRECT_TAX_CALC" | "SUSPICIOUS_AMOUNT" | "INCOMPLETE_RECEIPT" | "POTENTIAL_DUPLICATE";
+    description: string;
+    severity: "LOW" | "MEDIUM" | "HIGH";
+}
 
-export type ReceiptAnalysis = z.infer<typeof ReceiptAnalysisSchema>;
+export interface ReceiptAnalysis {
+    businessName: string;
+    receiptNumber: string;
+    dateTime: string;
+    amountPaid: number;
+    vatAmount: number;
+    tin: string;
+    category: string;
+    anomalies: ReceiptAnomaly[];
+    recommendations: string[];
+    complianceScore: number;
+    extractedText: string;
+}
+
+const SYSTEM_PROMPT = `You are a Tanzanian tax compliance AI assistant. Analyze receipt images and return ONLY valid JSON.
+
+Your task:
+1. Extract all visible text and structured data from the receipt.
+2. Identify tax-related fields: business name, receipt number, date/time, amount paid, VAT amount, TIN number.
+3. Detect anomalies based on TRA (Tanzania Revenue Authority) requirements:
+   - MISSING_VAT: No VAT shown where it should apply (18% for businesses with turnover > 100M TZS/year)
+   - MISSING_TIN: No Tax Identification Number visible
+   - INCORRECT_TAX_CALC: VAT amount does not match 18% of pre-tax amount
+   - SUSPICIOUS_AMOUNT: Amount is inconsistent or suspicious
+   - INCOMPLETE_RECEIPT: Missing critical fields (business name, date, receipt number)
+   - POTENTIAL_DUPLICATE: Signs this could be a duplicate receipt
+4. Calculate complianceScore (0-100) based on TRA standards.
+5. Provide clear, actionable recommendations.
+
+Return all monetary values in TZS (Tanzania Shillings).
+For missing text fields, use empty string "". For missing number fields, use 0.
+
+Return ONLY this exact JSON structure, no extra text:
+{
+  "businessName": "",
+  "receiptNumber": "",
+  "dateTime": "",
+  "amountPaid": 0,
+  "vatAmount": 0,
+  "tin": "",
+  "category": "",
+  "anomalies": [
+    { "type": "MISSING_VAT", "description": "...", "severity": "HIGH" }
+  ],
+  "recommendations": ["..."],
+  "complianceScore": 75,
+  "extractedText": ""
+}`;
 
 export async function POST(request: NextRequest) {
     const session = await getSession();
@@ -31,10 +63,10 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Yahitaji kuingia" }, { status: 401 });
     }
 
-    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-    if (!apiKey) {
+    const token = process.env.GITHUB_MODELS_TOKEN;
+    if (!token) {
         return NextResponse.json(
-            { error: "AI service is not configured. Please set GOOGLE_GENERATIVE_AI_API_KEY." },
+            { error: "AI service is not configured. Please set GITHUB_MODELS_TOKEN." },
             { status: 503 }
         );
     }
@@ -47,7 +79,6 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Hakuna faili iliyopakiwa" }, { status: 400 });
         }
 
-        // Validate file type
         const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif", "application/pdf"];
         if (!allowedTypes.includes(file.type)) {
             return NextResponse.json(
@@ -56,49 +87,65 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Convert file to base64
+        // Convert to base64
         const bytes = await file.arrayBuffer();
         const base64 = Buffer.from(bytes).toString("base64");
+        const dataUrl = `data:${file.type};base64,${base64}`;
 
-        const prompt = `You are a Tanzanian tax compliance AI assistant. Analyze this receipt image carefully.
-
-Your task:
-1. Extract all visible text and structured data from the receipt.
-2. Identify all tax-related fields: business name, receipt number, date/time, amount paid, VAT amount, TIN number.
-3. Detect anomalies based on Tanzania Revenue Authority (TRA) requirements:
-   - MISSING_VAT: No VAT amount shown on a receipt where VAT should apply (businesses with turnover > 100M TZS/year must charge 18% VAT)
-   - MISSING_TIN: No TIN number visible
-   - INCORRECT_TAX_CALC: VAT amount doesn't match 18% of the pre-tax amount
-   - SUSPICIOUS_AMOUNT: Amount seems unusually high/low or inconsistent
-   - INCOMPLETE_RECEIPT: Missing critical fields like business name, date, or receipt number
-   - POTENTIAL_DUPLICATE: Indicators that this might be a duplicate (serial numbers, patterns)
-4. Calculate a compliance score (0-100) based on how well the receipt meets TRA standards.
-5. Provide clear, actionable recommendations.
-
-Return all monetary values in TZS (Tanzania Shillings).
-If a field is not visible or not applicable, use an empty string for text fields or 0 for number fields.`;
-
-        const result = await generateObject({
-            model: google("gemini-2.0-flash"),
-            schema: ReceiptAnalysisSchema,
+        const body: Record<string, unknown> = {
+            model: "gpt-4o",
             messages: [
+                { role: "system", content: SYSTEM_PROMPT },
                 {
                     role: "user",
                     content: [
                         {
                             type: "text",
-                            text: prompt,
+                            text: "Analyze this receipt and return the JSON response.",
                         },
                         {
-                            type: "image",
-                            image: `data:${file.type};base64,${base64}`,
+                            type: "image_url",
+                            image_url: { url: dataUrl, detail: "high" },
                         },
                     ],
                 },
             ],
+            response_format: { type: "json_object" },
+            max_tokens: 1500,
+        };
+
+        const response = await fetch("https://models.inference.ai.azure.com/chat/completions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(body),
         });
 
-        return NextResponse.json({ analysis: result.object }, { status: 200 });
+        if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            throw new Error(errData?.error?.message || `API error ${response.status}`);
+        }
+
+        const data = await response.json();
+        const content = data.choices?.[0]?.message?.content ?? "{}";
+
+        let analysis: ReceiptAnalysis;
+        try {
+            analysis = JSON.parse(content) as ReceiptAnalysis;
+        } catch {
+            throw new Error("AI returned invalid JSON. Please try again.");
+        }
+
+        // Clamp complianceScore to 0-100
+        if (typeof analysis.complianceScore === "number") {
+            analysis.complianceScore = Math.max(0, Math.min(100, Math.round(analysis.complianceScore)));
+        } else {
+            analysis.complianceScore = 50;
+        }
+
+        return NextResponse.json({ analysis }, { status: 200 });
     } catch (error) {
         console.error("Receipt analysis error:", error);
         const message = error instanceof Error ? error.message : "Unknown error";
