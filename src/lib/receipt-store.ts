@@ -1,6 +1,7 @@
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { randomUUID } from "node:crypto";
+import type { ReceiptAnalysis } from "@/app/api/ai/analyze-receipt/route";
 
 export interface ReceiptItem {
     description: string;
@@ -17,6 +18,8 @@ export interface StoredReceipt {
     paymentMethod: "Cash" | "M-Pesa" | "Other";
     date: string;
     qrCode: string;
+    sourceType?: "manual" | "ai-scanned";
+    aiAnalysis?: ReceiptAnalysis;
 }
 
 const DATA_DIR = join(process.cwd(), "data");
@@ -46,14 +49,16 @@ export async function writeReceipts(receipts: StoredReceipt[]) {
     await writeFile(RECEIPTS_FILE, JSON.stringify(receipts, null, 2), "utf8");
 }
 
-export async function addReceipt(receipt: Omit<StoredReceipt, "id" | "date" | "qrCode">): Promise<StoredReceipt> {
+export async function addReceipt(
+    receipt: Omit<StoredReceipt, "id" | "date" | "qrCode">
+): Promise<StoredReceipt> {
     const receipts = await readReceipts();
     const id = randomUUID();
     const newReceipt: StoredReceipt = {
         ...receipt,
         id,
         date: new Date().toISOString(),
-        qrCode: `RECEIPT-${id.substring(0, 8)}`, // Simple QR code value for now
+        qrCode: `RECEIPT-${id.substring(0, 8)}`,
     };
     receipts.push(newReceipt);
     await writeReceipts(receipts);

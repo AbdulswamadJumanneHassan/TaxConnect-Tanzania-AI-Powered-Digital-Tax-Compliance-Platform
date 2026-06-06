@@ -17,12 +17,15 @@ import {
     BadgeCheck,
     LogOut,
     Eye,
-    X
+    X,
+    ScanLine,
+    Cpu
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import Link from "next/link";
 import { ReceiptModal } from "@/components/ReceiptModal";
 import { DigitalReceipt } from "@/components/DigitalReceipt";
+import { ReceiptScanModal } from "@/components/ReceiptScanModal";
 
 import { JWTPayload } from "@/lib/auth";
 import { StoredReceipt } from "@/lib/receipt-store";
@@ -34,6 +37,7 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedReceipt, setSelectedReceipt] = useState<StoredReceipt | null>(null);
+    const [isScanModalOpen, setIsScanModalOpen] = useState(false);
 
     const fetchSession = async () => {
         try {
@@ -214,8 +218,13 @@ export default function Dashboard() {
                                         receipts.slice(0, 5).map((r, i) => (
                                             <div key={r.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl hover:bg-slate-100 transition-colors group">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-primary border border-slate-200">
+                                                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-primary border border-slate-200 relative">
                                                         <ReceiptIcon className="w-5 h-5" />
+                                                        {r.sourceType === "ai-scanned" && (
+                                                            <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
+                                                                <Cpu className="w-2.5 h-2.5 text-white" />
+                                                            </span>
+                                                        )}
                                                     </div>
                                                     <div>
                                                         <p className="text-sm font-bold">{r.customerName}</p>
@@ -280,6 +289,18 @@ export default function Dashboard() {
                                 </button>
                             </div>
 
+                            {/* Scan Receipt with AI Button */}
+                            <button
+                                onClick={() => setIsScanModalOpen(true)}
+                                className="w-full py-6 bg-slate-900 border-2 border-slate-700 rounded-3xl text-primary font-bold flex flex-col items-center gap-3 hover:bg-slate-800 transition-all"
+                            >
+                                <ScanLine className="w-10 h-10" />
+                                <span className="flex flex-col items-center">
+                                    <span>Scan Receipt with AI</span>
+                                    <span className="text-[10px] font-normal text-slate-400 uppercase tracking-widest mt-1">Powered by Gemini</span>
+                                </span>
+                            </button>
+
                             {/* Add Receipt Button */}
                             <button
                                 onClick={() => setIsModalOpen(true)}
@@ -298,6 +319,12 @@ export default function Dashboard() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSuccess={fetchReceipts}
+            />
+
+            <ReceiptScanModal
+                isOpen={isScanModalOpen}
+                onClose={() => setIsScanModalOpen(false)}
+                onSave={() => fetchReceipts()}
             />
 
             <AnimatePresence>
