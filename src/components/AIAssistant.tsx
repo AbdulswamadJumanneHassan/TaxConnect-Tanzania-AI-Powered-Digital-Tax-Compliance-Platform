@@ -96,7 +96,7 @@ export function AIAssistant() {
         <>
             {/* Floating Button */}
             <button
-                onClick={() => setIsOpen(true)}
+                onClick={() => setIsOpen(!isOpen)}
                 className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-2xl shadow-blue-500/30 hover:scale-110 transition-transform z-50 group"
             >
                 <MessageSquare className="w-8 h-8 text-white group-hover:rotate-12 transition-transform" />
