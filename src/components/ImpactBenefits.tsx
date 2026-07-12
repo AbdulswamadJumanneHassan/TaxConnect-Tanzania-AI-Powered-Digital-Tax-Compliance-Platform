@@ -15,14 +15,14 @@ const benefits = [
         value: "+30%",
         description: "Average increase in taxable revenue for businesses through better expense tracking.",
         icon: TrendingUp,
-        color: "bg-green-500/10 text-green-500"
+        color: "bg-yellow-500/10 text-yellow-500"
     },
     {
         title: "Faster Filing",
         value: "10x",
         description: "Reduction in time spent on monthly tax preparation and TRA submissions.",
         icon: Clock,
-        color: "bg-blue-500/10 text-blue-500"
+        color: "bg-yellow-500/10 text-yellow-500"
     },
     {
         title: "Lower Costs",
@@ -36,14 +36,14 @@ const benefits = [
         value: "100%",
         description: "Full visibility into your tax status, ensuring audit-readiness at all times.",
         icon: ShieldCheck,
-        color: "bg-purple-500/10 text-purple-500"
+        color: "bg-yellow-500/10 text-yellow-500"
     },
     {
         title: "Formalization",
         value: "8K+",
         description: "Businesses successfully formalized and registered through our platform.",
         icon: Store,
-        color: "bg-orange-500/10 text-orange-500"
+        color: "bg-yellow-500/10 text-yellow-500"
     }
 ];
 

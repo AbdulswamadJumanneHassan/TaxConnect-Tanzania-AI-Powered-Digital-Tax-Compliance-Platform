@@ -74,7 +74,7 @@ export function FeaturesMinimal() {
     <section className="py-32 px-6 bg-slate-900 relative overflow-hidden">
       {/* Subtle background */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-1/3 right-0 w-96 h-96 bg-purple-500 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 right-0 w-96 h-96 bg-yellow-500 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto max-w-6xl relative z-10">
@@ -110,14 +110,14 @@ export function FeaturesMinimal() {
                 variants={itemVariants}
                 className="group"
               >
-                <div className="p-8 rounded-lg border border-slate-700 bg-slate-800/50 backdrop-blur-sm hover:border-blue-400/50 hover:bg-slate-800/80 transition-all duration-300 h-full">
+                <div className="p-8 rounded-lg border border-slate-700 bg-slate-800/50 backdrop-blur-sm hover:border-yellow-400/50 hover:bg-slate-800/80 transition-all duration-300 h-full">
                   {/* Icon */}
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center mb-6 group-hover:from-blue-500/40 group-hover:to-purple-500/40 transition-all">
-                    <Icon className="w-6 h-6 text-blue-400" />
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-500/20 to-yellow-500/20 flex items-center justify-center mb-6 group-hover:from-yellow-500/40 group-hover:to-yellow-500/40 transition-all">
+                    <Icon className="w-6 h-6 text-yellow-400" />
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-lg font-bold text-white mb-3 group-hover:text-blue-300 transition-colors">
+                  <h3 className="text-lg font-bold text-white mb-3 group-hover:text-yellow-300 transition-colors">
                     {feature.title}
                   </h3>
                   <p className="text-slate-400 text-sm leading-relaxed">

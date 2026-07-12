@@ -18,9 +18,9 @@ interface ReceiptScanModalProps {
 type Screen = "upload" | "scanning" | "results";
 
 const SEVERITY_COLORS = {
-    LOW: "bg-blue-50 text-blue-600 border-blue-100",
-    MEDIUM: "bg-amber-50 text-amber-700 border-amber-100",
-    HIGH: "bg-red-50 text-red-600 border-red-100",
+    LOW: "bg-yellow-50 text-yellow-600 border-yellow-100",
+    MEDIUM: "bg-yellow-50 text-yellow-700 border-yellow-100",
+    HIGH: "bg-yellow-50 text-yellow-600 border-yellow-100",
 } as const;
 
 const SEVERITY_ICONS = {
@@ -221,7 +221,7 @@ export function ReceiptScanModal({ isOpen, onClose, onSave }: ReceiptScanModalPr
                                     className={`relative border-2 border-dashed rounded-3xl p-10 flex flex-col items-center justify-center cursor-pointer transition-all ${dragOver
                                         ? "border-primary bg-primary/5 scale-[1.01]"
                                         : file
-                                            ? "border-green-400 bg-green-50"
+                                            ? "border-yellow-400 bg-yellow-50"
                                             : "border-slate-200 hover:border-primary/40 hover:bg-slate-50"
                                         }`}
                                 >
@@ -240,7 +240,7 @@ export function ReceiptScanModal({ isOpen, onClose, onSave }: ReceiptScanModalPr
                                             className="max-h-48 object-contain rounded-xl mb-4 shadow-md"
                                         />
                                     ) : (
-                                        <div className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-4 ${file ? "bg-green-100 text-green-500" : "bg-slate-100 text-slate-400"}`}>
+                                        <div className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-4 ${file ? "bg-yellow-100 text-yellow-500" : "bg-slate-100 text-slate-400"}`}>
                                             {file ? <CheckCircle2 className="w-10 h-10" /> : <Upload className="w-10 h-10" />}
                                         </div>
                                     )}
@@ -262,7 +262,7 @@ export function ReceiptScanModal({ isOpen, onClose, onSave }: ReceiptScanModalPr
                                 </div>
 
                                 {error && (
-                                    <div className="mt-4 p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-sm font-medium">
+                                    <div className="mt-4 p-4 bg-yellow-50 border border-yellow-100 rounded-2xl text-yellow-600 text-sm font-medium">
                                         {error}
                                     </div>
                                 )}
@@ -315,12 +315,12 @@ export function ReceiptScanModal({ isOpen, onClose, onSave }: ReceiptScanModalPr
                                                 initial={{ opacity: 0, x: -10 }}
                                                 animate={{ opacity: 1, x: 0 }}
                                                 transition={{ delay: i * 0.15 }}
-                                                className={`flex items-center gap-3 p-3 rounded-2xl transition-all ${done ? "bg-green-50" : active ? "bg-primary/5" : "bg-slate-50"}`}
+                                                className={`flex items-center gap-3 p-3 rounded-2xl transition-all ${done ? "bg-yellow-50" : active ? "bg-primary/5" : "bg-slate-50"}`}
                                             >
-                                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${done ? "bg-green-500 text-white" : active ? "bg-primary text-white" : "bg-slate-200 text-slate-400"}`}>
+                                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${done ? "bg-yellow-500 text-white" : active ? "bg-primary text-white" : "bg-slate-200 text-slate-400"}`}>
                                                     {done ? <CheckCircle2 className="w-4 h-4" /> : <Icon className="w-4 h-4" />}
                                                 </div>
-                                                <span className={`text-sm font-medium ${done ? "text-green-700" : active ? "text-primary" : "text-slate-400"}`}>
+                                                <span className={`text-sm font-medium ${done ? "text-yellow-700" : active ? "text-primary" : "text-slate-400"}`}>
                                                     {step.label}
                                                 </span>
                                                 {active && (
@@ -348,13 +348,13 @@ export function ReceiptScanModal({ isOpen, onClose, onSave }: ReceiptScanModalPr
                             >
                                 {/* Compliance Score */}
                                 <div className={`p-5 rounded-2xl flex items-center gap-5 ${analysis.complianceScore >= 80
-                                    ? "bg-green-50 border border-green-100"
+                                    ? "bg-yellow-50 border border-yellow-100"
                                     : analysis.complianceScore >= 50
-                                        ? "bg-amber-50 border border-amber-100"
-                                        : "bg-red-50 border border-red-100"
+                                        ? "bg-yellow-50 border border-yellow-100"
+                                        : "bg-yellow-50 border border-yellow-100"
                                     }`}
                                 >
-                                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-black flex-shrink-0 ${analysis.complianceScore >= 80 ? "bg-green-500 text-white" : analysis.complianceScore >= 50 ? "bg-amber-500 text-white" : "bg-red-500 text-white"}`}>
+                                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-black flex-shrink-0 ${analysis.complianceScore >= 80 ? "bg-yellow-500 text-white" : analysis.complianceScore >= 50 ? "bg-yellow-500 text-white" : "bg-yellow-500 text-white"}`}>
                                         {analysis.complianceScore}
                                     </div>
                                     <div>
@@ -425,9 +425,9 @@ export function ReceiptScanModal({ isOpen, onClose, onSave }: ReceiptScanModalPr
                                         </p>
                                         <div className="space-y-2">
                                             {analysis.recommendations.map((rec, i) => (
-                                                <div key={i} className="flex items-start gap-3 p-3 bg-amber-50 rounded-2xl border border-amber-100">
-                                                    <Sparkles className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                                                    <p className="text-xs text-amber-800">{rec}</p>
+                                                <div key={i} className="flex items-start gap-3 p-3 bg-yellow-50 rounded-2xl border border-yellow-100">
+                                                    <Sparkles className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+                                                    <p className="text-xs text-yellow-800">{rec}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -435,7 +435,7 @@ export function ReceiptScanModal({ isOpen, onClose, onSave }: ReceiptScanModalPr
                                 )}
 
                                 {error && (
-                                    <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-sm font-medium">
+                                    <div className="p-4 bg-yellow-50 border border-yellow-100 rounded-2xl text-yellow-600 text-sm font-medium">
                                         {error}
                                     </div>
                                 )}

@@ -57,8 +57,8 @@ export function DashboardPreview() {
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     {[
                                         { label: "Total Revenue", value: "TSh 12.4M", icon: BarChart3, color: "text-[#FFD700]" },
-                                        { label: "Tax Liability", value: "TSh 1.8M", icon: PieChart, color: "text-blue-400" },
-                                        { label: "Pending Issues", value: "2 Alerts", icon: Bell, color: "text-red-400" }
+                                        { label: "Tax Liability", value: "TSh 1.8M", icon: PieChart, color: "text-yellow-400" },
+                                        { label: "Pending Issues", value: "2 Alerts", icon: Bell, color: "text-yellow-400" }
                                     ].map((stat, i) => (
                                         <div key={i} className="p-6 rounded-2xl bg-white/5 border border-white/10">
                                             <div className="flex justify-between items-start mb-4">
@@ -101,8 +101,8 @@ export function DashboardPreview() {
                                             <div className="p-3 rounded-lg bg-[#FFD700]/5 border border-[#FFD700]/10 text-xs text-gray-400">
                                                 <span className="text-[#FFD700] font-bold">Tip:</span> Deduct TSh 450k for office repairs.
                                             </div>
-                                            <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/10 text-xs text-gray-400">
-                                                <span className="text-blue-400 font-bold">Info:</span> VAT filing due in 3 days.
+                                            <div className="p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/10 text-xs text-gray-400">
+                                                <span className="text-yellow-400 font-bold">Info:</span> VAT filing due in 3 days.
                                             </div>
                                         </div>
                                     </div>
@@ -119,7 +119,7 @@ export function DashboardPreview() {
 
                     {/* Background Globs */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-30 pointer-events-none">
-                        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600 rounded-full blur-[160px]" />
+                        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-600 rounded-full blur-[160px]" />
                         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#FFD700] rounded-full blur-[160px]" />
                     </div>
                 </div>

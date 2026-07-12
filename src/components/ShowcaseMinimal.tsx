@@ -21,8 +21,8 @@ export function ShowcaseMinimal() {
         transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-5"
       >
-        <div className="absolute inset-0 border border-blue-500 rounded-full" />
-        <div className="absolute inset-12 border border-purple-500 rounded-full" />
+        <div className="absolute inset-0 border border-yellow-500 rounded-full" />
+        <div className="absolute inset-12 border border-yellow-500 rounded-full" />
       </motion.div>
 
       <div className="container mx-auto max-w-6xl relative z-10">
@@ -53,7 +53,7 @@ export function ShowcaseMinimal() {
                   viewport={{ once: true }}
                   className="flex items-center gap-3"
                 >
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-500 to-yellow-500 flex items-center justify-center flex-shrink-0">
                     <Check className="w-4 h-4 text-white" />
                   </div>
                   <span className="text-slate-300">{benefit}</span>
@@ -64,7 +64,7 @@ export function ShowcaseMinimal() {
             {/* CTA */}
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 group"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-500 text-white font-semibold rounded-lg hover:shadow-2xl hover:shadow-yellow-500/30 transition-all duration-300 group"
             >
               Get Started Free
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -84,10 +84,10 @@ export function ShowcaseMinimal() {
               <motion.div
                 animate={{ y: [0, -15, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
-                className="rounded-2xl border border-blue-400/20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-8 backdrop-blur-sm overflow-hidden"
+                className="rounded-2xl border border-yellow-400/20 bg-gradient-to-br from-yellow-500/10 to-yellow-500/10 p-8 backdrop-blur-sm overflow-hidden"
               >
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5" />
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-yellow-500/5" />
 
                 <div className="relative z-10 space-y-6">
                   {/* Header */}
@@ -100,7 +100,7 @@ export function ShowcaseMinimal() {
                     </div>
                     <div className="text-right">
                       <p className="text-xs text-slate-400 mb-1">Tax (18%)</p>
-                      <p className="text-xl font-bold text-blue-400">TSh 22,500</p>
+                      <p className="text-xl font-bold text-yellow-400">TSh 22,500</p>
                     </div>
                   </div>
 
@@ -122,7 +122,7 @@ export function ShowcaseMinimal() {
 
                   {/* Status */}
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    <div className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
                     <span className="text-sm text-slate-300">
                       Verified with TRA
                     </span>
@@ -134,7 +134,7 @@ export function ShowcaseMinimal() {
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                className="absolute -top-8 -right-8 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500/80 to-purple-500/80 backdrop-blur-sm text-white text-sm font-semibold whitespace-nowrap"
+                className="absolute -top-8 -right-8 px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500/80 to-yellow-500/80 backdrop-blur-sm text-white text-sm font-semibold whitespace-nowrap"
               >
                 ✨ Instant approval
               </motion.div>

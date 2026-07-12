@@ -78,7 +78,7 @@ export function PricingMinimal() {
     <section className="py-32 px-6 bg-slate-900 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-yellow-500 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto max-w-6xl relative z-10">
@@ -112,16 +112,16 @@ export function PricingMinimal() {
               variants={itemVariants}
               className={`relative rounded-2xl overflow-hidden transition-all duration-300 ${
                 plan.highlighted
-                  ? "md:scale-105 border border-blue-400/50 bg-gradient-to-br from-blue-500/20 to-purple-500/20"
+                  ? "md:scale-105 border border-yellow-400/50 bg-gradient-to-br from-yellow-500/20 to-yellow-500/20"
                   : "border border-slate-700 bg-slate-800/50 hover:border-slate-600"
               }`}
             >
               {/* Background gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10" />
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-yellow-500/10" />
 
               {/* Badge */}
               {plan.highlighted && (
-                <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold">
+                <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-500 text-white text-xs font-bold">
                   Popular
                 </div>
               )}
@@ -149,7 +149,7 @@ export function PricingMinimal() {
                 <div className="space-y-3 mb-8 flex-1">
                   {plan.features.map((feature, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
                       <span className="text-slate-300 text-sm">{feature}</span>
                     </div>
                   ))}
@@ -160,8 +160,8 @@ export function PricingMinimal() {
                   href="/register"
                   className={`group w-full py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
                     plan.highlighted
-                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg hover:shadow-blue-500/50"
-                      : "border border-slate-600 text-slate-300 hover:border-blue-400 hover:text-blue-300"
+                      ? "bg-gradient-to-r from-yellow-500 to-yellow-500 text-white hover:shadow-lg hover:shadow-yellow-500/50"
+                      : "border border-slate-600 text-slate-300 hover:border-yellow-400 hover:text-yellow-300"
                   }`}
                 >
                   {plan.cta}

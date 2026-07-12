@@ -44,7 +44,7 @@ export function ProblemStatement() {
                         viewport={{ once: true }}
                     >
                         <h2 className="text-4xl md:text-5xl font-black text-[#1A1A1A] mb-8 leading-tight">
-                            The <span className="text-red-600">Hidden Burden</span> <br />
+                            The <span className="text-yellow-600">Hidden Burden</span> <br />
                             of Tax Compliance
                         </h2>
                         <p className="text-lg text-gray-600 mb-8 leading-relaxed">
@@ -62,8 +62,8 @@ export function ProblemStatement() {
                                     transition={{ delay: i * 0.1 }}
                                     className="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100"
                                 >
-                                    <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center shrink-0">
-                                        <problem.icon className="w-5 h-5 text-red-600" />
+                                    <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center shrink-0">
+                                        <problem.icon className="w-5 h-5 text-yellow-600" />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-[#1A1A1A] mb-1">{problem.title}</h3>
@@ -83,24 +83,24 @@ export function ProblemStatement() {
                     >
                         <div className="p-8 rounded-3xl bg-[#1A1A1A] text-white shadow-2xl relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4">
-                                <XCircle className="w-12 h-12 text-red-500 opacity-20" />
+                                <XCircle className="w-12 h-12 text-yellow-500 opacity-20" />
                             </div>
-                            <h3 className="text-2xl font-bold mb-6 text-red-400">Common Pitfalls</h3>
+                            <h3 className="text-2xl font-bold mb-6 text-yellow-400">Common Pitfalls</h3>
                             <ul className="space-y-4 text-gray-400">
                                 <li className="flex items-start gap-3">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0" />
+                                    <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 mt-2 shrink-0" />
                                     Missing tax deadlines leading to heavy penalties.
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0" />
+                                    <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 mt-2 shrink-0" />
                                     Inaccurate record-keeping affecting loan eligibility.
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0" />
+                                    <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 mt-2 shrink-0" />
                                     High costs of hiring professional accountants.
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0" />
+                                    <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 mt-2 shrink-0" />
                                     Difficulty in proving revenue for business formalization.
                                 </li>
                             </ul>

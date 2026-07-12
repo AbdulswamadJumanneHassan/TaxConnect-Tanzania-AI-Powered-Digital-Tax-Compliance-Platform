@@ -52,7 +52,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex flex-col">
+        <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-yellow-50 flex flex-col">
             {/* Header */}
             <header className="py-6 px-4 bg-white shadow-sm">
                 <div className="max-w-7xl mx-auto">
@@ -68,7 +68,7 @@ export default function LoginPage() {
                     <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
                         {/* Header */}
                         <div className="text-center mb-8">
-                            <div className="w-16 h-16 bg-gradient-to-br from-primary to-amber-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                            <div className="w-16 h-16 bg-gradient-to-br from-primary to-yellow-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                                 <LogIn className="w-8 h-8 text-slate-900" />
                             </div>
                             <h1 className="text-3xl font-bold text-slate-900 mb-2">
@@ -84,7 +84,7 @@ export default function LoginPage() {
                             <motion.div
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-medium"
+                                className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl text-yellow-700 text-sm font-medium"
                             >
                                 {error}
                             </motion.div>
@@ -105,7 +105,7 @@ export default function LoginPage() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="name@example.com"
                                         disabled={loading}
-                                        className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-yellow-500 focus:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                         required
                                     />
                                 </div>
@@ -124,7 +124,7 @@ export default function LoginPage() {
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="••••••••"
                                         disabled={loading}
-                                        className="w-full pl-12 pr-12 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-full pl-12 pr-12 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-yellow-500 focus:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                         required
                                     />
                                     <button
@@ -158,7 +158,7 @@ export default function LoginPage() {
                                 </label>
                                 <Link
                                     href="#"
-                                    className="text-sm text-blue-600 hover:text-blue-700 transition-colors"
+                                    className="text-sm text-yellow-600 hover:text-yellow-700 transition-colors"
                                 >
                                     Nilisahau neno la siri?
                                 </Link>
@@ -168,7 +168,7 @@ export default function LoginPage() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full mt-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-blue-500/40 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                className="w-full mt-8 py-3 bg-gradient-to-r from-yellow-500 to-yellow-500 text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-yellow-500/40 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                             >
                                 {loading ? (
                                     <>

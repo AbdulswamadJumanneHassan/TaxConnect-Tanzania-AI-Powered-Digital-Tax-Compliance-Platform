@@ -158,14 +158,14 @@ export default function RegisterPage() {
                                 exit={{ opacity: 0, x: -20 }}
                                 className="bg-white p-10 rounded-3xl shadow-xl border border-slate-100"
                             >
-                                <div className="w-16 h-16 bg-green-500/10 rounded-2xl flex items-center justify-center mb-6">
-                                    <ShieldCheck className="w-8 h-8 text-green-500" />
+                                <div className="w-16 h-16 bg-yellow-500/10 rounded-2xl flex items-center justify-center mb-6">
+                                    <ShieldCheck className="w-8 h-8 text-yellow-500" />
                                 </div>
                                 <h2 className="text-3xl font-bold mb-2 text-slate-900">Wasifu wa Kodi</h2>
                                 <p className="text-slate-500 mb-8">Hongera! Tumetengeneza wasifu wako wa kodi.</p>
 
                                 {error && (
-                                    <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm">
+                                    <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-2xl text-yellow-700 text-sm">
                                         {error}
                                     </div>
                                 )}

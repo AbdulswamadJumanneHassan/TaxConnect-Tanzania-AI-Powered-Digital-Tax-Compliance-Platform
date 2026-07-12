@@ -97,7 +97,7 @@ export function AIAssistant() {
             {/* Floating Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-2xl shadow-blue-500/30 hover:scale-110 transition-transform z-50 group"
+                className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-500 rounded-full flex items-center justify-center shadow-2xl shadow-yellow-500/30 hover:scale-110 transition-transform z-50 group"
             >
                 <MessageSquare className="w-8 h-8 text-white group-hover:rotate-12 transition-transform" />
                 <span className="absolute -top-1 -right-1 flex h-4 w-4">
@@ -116,7 +116,7 @@ export function AIAssistant() {
                         className="fixed bottom-28 right-8 w-[380px] h-[500px] bg-slate-800/95 backdrop-blur-md rounded-3xl z-50 flex flex-col overflow-hidden border border-slate-700 shadow-2xl shadow-black/50"
                     >
                         {/* Header */}
-                        <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 text-white flex items-center justify-between">
+                        <div className="bg-gradient-to-r from-yellow-500 to-yellow-500 p-6 text-white flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                                     <Bot className="w-6 h-6" />
@@ -145,7 +145,7 @@ export function AIAssistant() {
                                     className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
                                 >
                                     <div className={`max-w-[80%] p-4 rounded-2xl text-sm ${m.role === "user"
-                                        ? "bg-blue-600 text-white font-semibold rounded-tr-none"
+                                        ? "bg-yellow-600 text-white font-semibold rounded-tr-none"
                                         : "bg-slate-700 text-slate-100 rounded-tl-none"
                                         }`}>
                                         {m.content}
@@ -187,12 +187,12 @@ export function AIAssistant() {
                                     }}
                                     placeholder="Uliza chochote..."
                                     disabled={isLoading}
-                                    className="w-full bg-slate-700 border border-slate-600 rounded-2xl py-3 pl-4 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm text-white placeholder-slate-400 disabled:opacity-50"
+                                    className="w-full bg-slate-700 border border-slate-600 rounded-2xl py-3 pl-4 pr-12 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 text-sm text-white placeholder-slate-400 disabled:opacity-50"
                                 />
                                 <button
                                     onClick={handleSend}
                                     disabled={isLoading || !input.trim()}
-                                    className="absolute right-2 top-1.5 p-1.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="absolute right-2 top-1.5 p-1.5 bg-gradient-to-r from-yellow-500 to-yellow-500 text-white rounded-xl hover:opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <Send className="w-4 h-4" />
                                 </button>

@@ -13,7 +13,7 @@ export function CTAMinimal() {
       <motion.div
         animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 8, repeat: Infinity }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl opacity-50"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl opacity-50"
       />
 
       <div className="container mx-auto max-w-3xl relative z-10">
@@ -35,14 +35,14 @@ export function CTAMinimal() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/register"
-              className="group px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 flex items-center justify-center gap-2"
+              className="group px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-500 text-white font-semibold rounded-lg hover:shadow-2xl hover:shadow-yellow-500/50 transition-all duration-300 flex items-center justify-center gap-2"
             >
               Start Free Now
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="#contact"
-              className="px-8 py-4 border border-slate-600 text-slate-300 font-semibold rounded-lg hover:border-blue-400 hover:text-blue-300 transition-all duration-300"
+              className="px-8 py-4 border border-slate-600 text-slate-300 font-semibold rounded-lg hover:border-yellow-400 hover:text-yellow-300 transition-all duration-300"
             >
               Questions? Let's Talk
             </Link>

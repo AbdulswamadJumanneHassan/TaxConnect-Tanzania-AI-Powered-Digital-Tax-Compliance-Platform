@@ -256,7 +256,7 @@ export function DigitalReceipt({ receipt }: ReceiptProps) {
                                     </div>
                                     <button
                                         onClick={() => removeItem(item.id)}
-                                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                        className="p-2 text-yellow-500 hover:bg-yellow-50 rounded-lg transition-colors"
                                     >
                                         <Trash2 className="w-5 h-5" />
                                     </button>

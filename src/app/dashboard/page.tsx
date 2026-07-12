@@ -135,7 +135,7 @@ export default function Dashboard() {
 
                     <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-red-500 hover:bg-red-50 transition-all mt-8"
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-yellow-500 hover:bg-yellow-50 transition-all mt-8"
                     >
                         <LogOut className="w-5 h-5" />
                         Ondoka
@@ -191,7 +191,7 @@ export default function Dashboard() {
                                     <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400">
                                         <stat.icon className="w-6 h-6" />
                                     </div>
-                                    <span className={`text-xs font-bold px-2 py-1 rounded-lg ${stat.trend.startsWith("+") ? "bg-green-50 text-green-500" : "bg-blue-50 text-blue-500"}`}>
+                                    <span className={`text-xs font-bold px-2 py-1 rounded-lg ${stat.trend.startsWith("+") ? "bg-yellow-50 text-yellow-500" : "bg-yellow-50 text-yellow-500"}`}>
                                         {stat.trend}
                                     </span>
                                 </div>

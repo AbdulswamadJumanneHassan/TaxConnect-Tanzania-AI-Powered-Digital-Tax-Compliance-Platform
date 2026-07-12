@@ -102,9 +102,9 @@ export function RegulatorCockpit() {
                                         <div className="text-xs font-black text-white uppercase tracking-tighter">TRA Admin Portal</div>
                                     </div>
                                     <div className="flex gap-2">
-                                        <div className="w-2 h-2 rounded-full bg-red-500" />
+                                        <div className="w-2 h-2 rounded-full bg-yellow-500" />
                                         <div className="w-2 h-2 rounded-full bg-[#FFD700]" />
-                                        <div className="w-2 h-2 rounded-full bg-green-500" />
+                                        <div className="w-2 h-2 rounded-full bg-yellow-500" />
                                     </div>
                                 </div>
 
@@ -115,7 +115,7 @@ export function RegulatorCockpit() {
                                         <div className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Total National Revenue (Daily)</div>
                                         <div className="text-4xl font-black text-white flex items-center gap-3">
                                             TSh 8.42B
-                                            <span className="text-green-500 text-sm font-bold flex items-center">
+                                            <span className="text-yellow-500 text-sm font-bold flex items-center">
                                                 <TrendingUp className="w-4 h-4 mr-1" /> +12%
                                             </span>
                                         </div>
@@ -125,7 +125,7 @@ export function RegulatorCockpit() {
                                     <div className="h-48 rounded-2xl bg-[#1A1A1A] border border-white/5 relative overflow-hidden flex items-center justify-center">
                                         <div className="absolute inset-0 opacity-30">
                                             <div className="absolute top-10 left-10 w-20 h-20 bg-[#FFD700] rounded-full blur-3xl animate-pulse" />
-                                            <div className="absolute bottom-10 right-20 w-32 h-32 bg-green-500 rounded-full blur-3xl animate-pulse" />
+                                            <div className="absolute bottom-10 right-20 w-32 h-32 bg-yellow-500 rounded-full blur-3xl animate-pulse" />
                                         </div>
                                         <Search className="w-12 h-12 text-[#FFD700]/20" />
                                         <div className="absolute bottom-4 left-6 right-6 flex justify-between">
@@ -137,12 +137,12 @@ export function RegulatorCockpit() {
 
                                     {/* Alerts */}
                                     <div className="space-y-3">
-                                        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-between">
+                                        <div className="p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-between">
                                             <div className="flex items-center gap-3">
-                                                <ShieldAlert className="w-4 h-4 text-red-500" />
+                                                <ShieldAlert className="w-4 h-4 text-yellow-500" />
                                                 <span className="text-[10px] text-gray-400">Suspicious EFD activity detected in Mwanza</span>
                                             </div>
-                                            <div className="text-[10px] text-red-500 font-bold uppercase cursor-pointer hover:underline">Investigate</div>
+                                            <div className="text-[10px] text-yellow-500 font-bold uppercase cursor-pointer hover:underline">Investigate</div>
                                         </div>
                                         <div className="p-4 rounded-xl bg-[#FFD700]/5 border border-[#FFD700]/10 flex items-center justify-between">
                                             <div className="flex items-center gap-3">
@@ -158,7 +158,7 @@ export function RegulatorCockpit() {
 
                         {/* Decorative Elements */}
                         <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#FFD700] rounded-full blur-[100px] opacity-20 -z-10" />
-                        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-green-500 rounded-full blur-[100px] opacity-10 -z-10" />
+                        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-yellow-500 rounded-full blur-[100px] opacity-10 -z-10" />
                     </motion.div>
                 </div>
             </div>

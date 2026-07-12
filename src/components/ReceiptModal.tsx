@@ -196,7 +196,7 @@ export function ReceiptModal({ isOpen, onClose, onSuccess }: ReceiptModalProps) 
                                             type="button"
                                             onClick={() => removeItem(index)}
                                             disabled={items.length === 1}
-                                            className="p-4 text-red-400 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all disabled:opacity-30"
+                                            className="p-4 text-yellow-400 hover:text-yellow-500 hover:bg-yellow-50 rounded-2xl transition-all disabled:opacity-30"
                                         >
                                             <Trash2 className="w-5 h-5" />
                                         </button>
@@ -206,7 +206,7 @@ export function ReceiptModal({ isOpen, onClose, onSuccess }: ReceiptModalProps) 
                         </div>
 
                         {error && (
-                            <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-sm font-medium">
+                            <div className="p-4 bg-yellow-50 border border-yellow-100 rounded-2xl text-yellow-600 text-sm font-medium">
                                 {error}
                             </div>
                         )}
