@@ -37,9 +37,7 @@ export function HeroMinimal() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#FFD700]/30 bg-[#FFD700]/10 mb-8 backdrop-blur-sm"
           >
             <Code2 className="w-4 h-4 text-[#FFD700]" />
-            <span className="text-sm font-bold text-[#FFD700] uppercase tracking-widest">Innovation for TRA</span>
           </motion.div>
-
           {/* Main Heading */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
