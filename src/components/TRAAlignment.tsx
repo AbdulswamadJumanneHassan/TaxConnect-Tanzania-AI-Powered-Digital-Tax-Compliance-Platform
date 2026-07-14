@@ -96,9 +96,9 @@ export function TRAAlignment() {
                                 <div className="w-24 h-24 bg-[#FFD700] rounded-2xl mb-8 flex items-center justify-center rotate-3">
                                     <Building2 className="w-12 h-12 text-[#1A1A1A]" />
                                 </div>
-                                <h3 className="text-3xl font-black text-white mb-4 italic">Hapa Kazi Tu</h3>
+                                <h3 className="text-3xl font-black text-white mb-4">Vision 2030</h3>
                                 <p className="text-gray-400 text-sm max-w-xs">
-                                    Digitizing tax compliance to support President Samia Suluhu Hassan&apos;s vision for a modern Tanzanian economy.
+                                    Supporting Tanzania&apos;s Digital Economy Vision by modernizing tax compliance for all.
                                 </p>
                             </div>
 
