@@ -21,8 +21,8 @@ const aiFeatures = [
     {
         id: 2,
         icon: ShieldCheck,
-        title: "AI Receipt Verification",
-        description: "Instantly verify EFD and digital receipts against TRA records to ensure authenticity and prevent fraud.",
+        title: "Receipt Verification Prototype",
+        description: "Prototype demonstrating how EFD and digital receipts could be verified against TRA records to ensure authenticity.",
         color: "from-yellow-500 to-yellow-700"
     },
     {
@@ -35,8 +35,8 @@ const aiFeatures = [
     {
         id: 4,
         icon: Search,
-        title: "AI Fraud Detection",
-        description: "Advanced algorithms that scan for anomalies and protect your business from potential tax-related risks.",
+        title: "Fraud Detection Analysis",
+        description: "AI-assisted analysis conceptualizing how algorithms could scan for anomalies and protect your business.",
         color: "from-yellow-400 to-yellow-500"
     },
     {

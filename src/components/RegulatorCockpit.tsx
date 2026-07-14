@@ -14,22 +14,22 @@ import {
 const traFeatures = [
     {
         title: "AI Fraud-Shield",
-        description: "Detects evasion patterns and invalid EFD receipts in real-time, preventing revenue leakage before filing.",
+        description: "AI-assisted analysis demonstrating how evasion patterns and invalid EFD receipts could be detected.",
         icon: ShieldAlert
     },
     {
         title: "Economic Heatmaps",
-        description: "Live visualization of tax collection across regions, identifying high-growth sectors and collection gaps.",
+        description: "Conceptual dashboard visualizing tax collection across regions to identify collection gaps.",
         icon: Map
     },
     {
         title: "Cross-Agency Sync",
-        description: "Seamless API integration with BRELA, NIDA, and PO-RALG for a unified national citizen database.",
+        description: "Designed for future integration with BRELA, NIDA, and PO-RALG for a unified national citizen database.",
         icon: Link2
     },
     {
         title: "Predictive Analytics",
-        description: "AI-driven forecasts for national revenue, assisting in precise budget planning and policy formulation.",
+        description: "Prototype demonstrating AI-driven forecasts for national revenue to assist in budget planning.",
         icon: BarChart
     }
 ];
@@ -60,8 +60,8 @@ export function RegulatorCockpit() {
                         </div>
 
                         <h2 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight">
-                            The <span className="text-[#FFD700]">Regulator&apos;s</span> <br />
-                            Intelligence Cockpit
+                            Conceptual <span className="text-[#FFD700]">Regulator</span> <br />
+                            Dashboard
                         </h2>
 
                         <p className="text-lg text-gray-400 mb-10 leading-relaxed">
@@ -112,7 +112,7 @@ export function RegulatorCockpit() {
                                 <div className="p-8 space-y-8">
                                     {/* Big Stat */}
                                     <div>
-                                        <div className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Total National Revenue (Daily)</div>
+                                        <div className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Total National Revenue (Simulated)</div>
                                         <div className="text-4xl font-black text-white flex items-center gap-3">
                                             TSh 8.42B
                                             <span className="text-yellow-500 text-sm font-bold flex items-center">
