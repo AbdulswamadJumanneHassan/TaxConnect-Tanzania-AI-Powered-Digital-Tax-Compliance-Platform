@@ -59,8 +59,9 @@ export function HeroMinimal() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed"
           >
-            AI-powered digital transformation for Tanzanian tax compliance.
-            Automated filing, real-time tracking, and effortless growth—built for TRA&apos;s 2030 vision.
+            <strong>Your AI Tax Assistant for Tanzania.</strong>
+            <br />
+            Understand taxes, prepare compliant reports, and stay ahead of filing deadlines—all in one intelligent platform.
           </motion.p>
 
           {/* CTA Buttons */}
