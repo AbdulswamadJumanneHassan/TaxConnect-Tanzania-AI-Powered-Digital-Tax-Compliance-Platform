@@ -90,21 +90,26 @@ export function HeroMinimal() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex justify-center gap-12 text-sm text-slate-400"
+            className="flex flex-wrap justify-center gap-6 md:gap-12 text-sm text-slate-400"
           >
             <div>
-              <p className="text-2xl font-bold text-white mb-1">25K+</p>
-              <p>Active Users</p>
+              <p className="text-lg font-bold text-white mb-1">AI Powered</p>
             </div>
-            <div className="w-px bg-slate-700" />
+            <div className="hidden md:block w-px bg-slate-700" />
             <div>
-              <p className="text-2xl font-bold text-white mb-1">TSh 2.5B</p>
-              <p>Tax Processed</p>
+              <p className="text-lg font-bold text-white mb-1">Prototype Ready</p>
             </div>
-            <div className="w-px bg-slate-700" />
+            <div className="hidden md:block w-px bg-slate-700" />
             <div>
-              <p className="text-2xl font-bold text-white mb-1">99.9%</p>
-              <p>Uptime</p>
+              <p className="text-lg font-bold text-white mb-1">Built for Tanzania</p>
+            </div>
+            <div className="hidden md:block w-px bg-slate-700" />
+            <div>
+              <p className="text-lg font-bold text-white mb-1">Competition Prototype</p>
+            </div>
+            <div className="hidden md:block w-px bg-slate-700" />
+            <div>
+              <p className="text-lg font-bold text-white mb-1">Ready for Pilot Testing</p>
             </div>
           </motion.div>
         </div>
