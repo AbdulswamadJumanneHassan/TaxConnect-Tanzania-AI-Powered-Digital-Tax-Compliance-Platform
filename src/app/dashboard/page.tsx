@@ -42,6 +42,7 @@ export default function Dashboard() {
     const [activeTab, setActiveTab] = useState("Dashboard");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [profileImage, setProfileImage] = useState<string | null>(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     const fetchSession = async () => {
         try {
@@ -139,6 +140,27 @@ export default function Dashboard() {
             const url = URL.createObjectURL(file);
             setProfileImage(url);
         }
+    };
+
+    const handleSaveSettings = async () => {
+        setIsSaving(true);
+        const newBusinessName = (document.getElementById('businessNameInput') as HTMLInputElement)?.value;
+        const newTin = (document.getElementById('tinInput') as HTMLInputElement)?.value;
+        
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        // Update local user state
+        if (user) {
+            setUser({ 
+                ...user, 
+                businessName: newBusinessName || user.businessName, 
+                tin: newTin || user.tin 
+            });
+        }
+        
+        setIsSaving(false);
+        alert('Mipangilio imehifadhiwa kikamilifu! (Settings saved successfully)');
     };
 
     if (loading) {
@@ -793,11 +815,11 @@ export default function Dashboard() {
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
                                                 <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Jina la Biashara</label>
-                                                <input type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:bg-white transition-all" defaultValue={user?.businessName || ""} placeholder="Ingiza jina la biashara" />
+                                                <input type="text" id="businessNameInput" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:bg-white transition-all" defaultValue={user?.businessName || ""} placeholder="Ingiza jina la biashara" />
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-slate-500 uppercase mb-1">TIN Namba (TRA)</label>
-                                                <input type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:bg-white transition-all" defaultValue={user?.tin || ""} placeholder="Mfano: 123-456-789" />
+                                                <input type="text" id="tinInput" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:bg-white transition-all" defaultValue={user?.tin || ""} placeholder="Mfano: 123-456-789" />
                                             </div>
                                         </div>
                                     </div>
@@ -833,8 +855,12 @@ export default function Dashboard() {
                                     </div>
 
                                     <div className="flex justify-end pt-4 border-t border-slate-100">
-                                        <button className="px-6 py-3 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
-                                            Hifadhi Mabadiliko
+                                        <button 
+                                            onClick={handleSaveSettings}
+                                            disabled={isSaving}
+                                            className="px-6 py-3 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all disabled:opacity-50 flex items-center justify-center min-w-[150px]"
+                                        >
+                                            {isSaving ? "Inahifadhi..." : "Hifadhi Mabadiliko"}
                                         </button>
                                     </div>
                                 </div>
