@@ -347,6 +347,84 @@ export default function Dashboard() {
                         </div>
                     </div>
                         </>
+                    ) : activeTab === "Risiti Zangu" ? (
+                        <div className="space-y-6 max-w-5xl mx-auto">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                                <div>
+                                    <h3 className="text-2xl font-bold text-slate-800">Risiti Zangu Zote</h3>
+                                    <p className="text-sm text-slate-500 mt-1">Tazama na dhibiti risiti zako zote ulizotoa.</p>
+                                </div>
+                                <div className="flex gap-3 w-full sm:w-auto">
+                                    <button 
+                                        onClick={() => setIsScanModalOpen(true)}
+                                        className="flex-1 sm:flex-none px-4 py-3 bg-slate-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors"
+                                    >
+                                        <ScanLine className="w-5 h-5" /> Scan Risiti
+                                    </button>
+                                    <button 
+                                        onClick={() => setIsModalOpen(true)}
+                                        className="flex-1 sm:flex-none px-4 py-3 bg-primary text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors"
+                                    >
+                                        <PlusCircle className="w-5 h-5" /> Mpya
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+                                <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Jumla ya Risiti: {receipts.length}</p>
+                                </div>
+                                <div className="divide-y divide-slate-100">
+                                    {receipts.length === 0 ? (
+                                        <div className="text-center py-16 bg-slate-50/30">
+                                            <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <ReceiptIcon className="w-10 h-10 text-slate-300" />
+                                            </div>
+                                            <p className="text-slate-500 font-medium">Huna risiti yoyote kwa sasa.</p>
+                                            <p className="text-slate-400 text-sm mt-1">Anza kwa kutengeneza au kuscan risiti mpya.</p>
+                                        </div>
+                                    ) : (
+                                        receipts.map((r) => (
+                                            <div key={r.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-6 hover:bg-slate-50 transition-colors group gap-4">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-primary border border-slate-200 relative shadow-sm shrink-0">
+                                                        <ReceiptIcon className="w-6 h-6" />
+                                                        {r.sourceType === "ai-scanned" && (
+                                                            <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-slate-900 rounded-full flex items-center justify-center shadow-sm border-2 border-white">
+                                                                <Cpu className="w-3 h-3 text-white" />
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-base font-bold text-slate-800">{r.customerName}</p>
+                                                        <div className="flex flex-wrap items-center gap-2 mt-1">
+                                                            <p className="text-[11px] text-slate-600 uppercase font-bold bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/60">
+                                                                {new Date(r.date).toLocaleDateString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                                            </p>
+                                                            <p className="text-[11px] text-slate-500 uppercase font-bold">
+                                                                {new Date(r.date).toLocaleTimeString('sw-TZ', { hour: '2-digit', minute: '2-digit' })}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto mt-2 sm:mt-0 pt-4 sm:pt-0 border-t sm:border-0 border-slate-100">
+                                                    <div className="text-left sm:text-right">
+                                                        <p className="font-bold text-lg text-slate-800">{r.total.toLocaleString()} TZS</p>
+                                                        <p className="text-[11px] text-primary uppercase font-bold bg-primary/10 px-2 py-0.5 rounded-md inline-block mt-1">{r.paymentMethod}</p>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => setSelectedReceipt(r)}
+                                                        className="p-3 bg-white border border-slate-200 rounded-xl text-slate-400 sm:opacity-0 group-hover:opacity-100 transition-all hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-sm"
+                                                    >
+                                                        <Eye className="w-5 h-5" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     ) : (
                         <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
                             <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
