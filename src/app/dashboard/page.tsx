@@ -526,6 +526,98 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         </div>
+                    ) : activeTab === "Tuzo & Beji" ? (
+                        <div className="space-y-6 max-w-5xl mx-auto">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                                <div>
+                                    <h3 className="text-2xl font-bold text-slate-800">Tuzo & Beji Zako</h3>
+                                    <p className="text-sm text-slate-500 mt-1">Kamilisha malengo ya kodi na ujishindie pointi.</p>
+                                </div>
+                                <div className="bg-primary/10 text-primary px-5 py-3 rounded-xl font-bold flex items-center gap-3 shadow-sm border border-primary/20">
+                                    <Award className="w-5 h-5" />
+                                    <span>Pointi Zako: {(receipts.length * 10).toLocaleString()}</span>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* Mlipakodi Shupavu */}
+                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-primary/20 relative overflow-hidden group hover:shadow-md transition-all">
+                                    <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
+                                    <div className="flex items-start gap-4 mb-4 relative z-10">
+                                        <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shrink-0 border border-primary/20">
+                                            <BadgeCheck className="w-7 h-7" />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-lg text-slate-800">Mlipakodi Shupavu</h4>
+                                            <p className="text-xs text-slate-500 mt-1">Imetolewa kwa kuanza kutumia mfumo na kutoa risiti yako ya kwanza.</p>
+                                        </div>
+                                    </div>
+                                    <div className="w-full bg-slate-100 rounded-full h-2.5 mb-2 relative z-10">
+                                        <div className="bg-primary h-2.5 rounded-full w-full"></div>
+                                    </div>
+                                    <p className="text-[10px] font-bold text-primary uppercase tracking-wider relative z-10">Imepatikana</p>
+                                </div>
+
+                                {/* Ukuaji wa Dhahabu */}
+                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden opacity-75 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+                                    <div className="flex items-start gap-4 mb-4 relative z-10">
+                                        <div className="w-14 h-14 bg-yellow-50 rounded-2xl flex items-center justify-center text-yellow-500 shrink-0">
+                                            <TrendingUp className="w-7 h-7" />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-lg text-slate-800">Ukuaji wa Dhahabu</h4>
+                                            <p className="text-xs text-slate-500 mt-1">Tengeneza risiti 50 ndani ya mwezi mmoja kupata beji hii.</p>
+                                        </div>
+                                    </div>
+                                    <div className="w-full bg-slate-100 rounded-full h-2.5 mb-2 relative z-10">
+                                        <div className="bg-yellow-400 h-2.5 rounded-full transition-all" style={{ width: `${Math.min((receipts.length / 50) * 100, 100)}%` }}></div>
+                                    </div>
+                                    <div className="flex justify-between items-center relative z-10">
+                                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{receipts.length} / 50 Risiti</p>
+                                        <p className="text-[10px] font-bold text-yellow-500 uppercase tracking-wider">{Math.round(Math.min((receipts.length / 50) * 100, 100))}% Imekamilika</p>
+                                    </div>
+                                </div>
+                                
+                                {/* Nyota wa Kidigitali */}
+                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden opacity-75 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+                                    <div className="flex items-start gap-4 mb-4 relative z-10">
+                                        <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-500 shrink-0">
+                                            <ScanLine className="w-7 h-7" />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-lg text-slate-800">Nyota wa Kidigitali</h4>
+                                            <p className="text-xs text-slate-500 mt-1">Tumia AI Scan kuingiza risiti 10 kwa urahisi.</p>
+                                        </div>
+                                    </div>
+                                    <div className="w-full bg-slate-100 rounded-full h-2.5 mb-2 relative z-10">
+                                        <div className="bg-blue-400 h-2.5 rounded-full transition-all" style={{ width: `${Math.min((receipts.filter(r => r.sourceType === "ai-scanned").length / 10) * 100, 100)}%` }}></div>
+                                    </div>
+                                    <div className="flex justify-between items-center relative z-10">
+                                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{receipts.filter(r => r.sourceType === "ai-scanned").length} / 10 Risiti</p>
+                                        <p className="text-[10px] font-bold text-blue-500 uppercase tracking-wider">{Math.round(Math.min((receipts.filter(r => r.sourceType === "ai-scanned").length / 10) * 100, 100))}% Imekamilika</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-slate-900 text-white rounded-3xl p-8 mt-8 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                                <div className="absolute -right-10 -top-10 opacity-10">
+                                    <Award className="w-64 h-64" />
+                                </div>
+                                <div className="relative z-10 max-w-lg">
+                                    <h3 className="text-2xl font-bold mb-2 text-primary">Pata Punguzo la Kodi</h3>
+                                    <p className="text-slate-400 text-sm leading-relaxed">
+                                        Kusanya pointi 1,000 na upate <strong className="text-white">punguzo la 2%</strong> kwenye kodi yako inayokadiriwa mwezi huu. Endelea kutumia mfumo huu kuwa mlipakodi bora wa mfano.
+                                    </p>
+                                </div>
+                                <div className="relative z-10 text-center bg-white/10 rounded-2xl p-6 backdrop-blur-sm border border-white/10 min-w-[200px]">
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Pointi Zilizobaki</p>
+                                    <h2 className="text-3xl font-bold text-white">{Math.max(1000 - (receipts.length * 10), 0).toLocaleString()}</h2>
+                                    <div className="w-full bg-white/10 rounded-full h-1 mt-4 overflow-hidden">
+                                        <div className="bg-primary h-1 rounded-full transition-all" style={{ width: `${Math.min(((receipts.length * 10) / 1000) * 100, 100)}%` }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     ) : (
                         <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
                             <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
