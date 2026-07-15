@@ -150,7 +150,7 @@ export default function Dashboard() {
     }
 
     return (
-        <main className="min-h-screen bg-slate-50 flex">
+        <main className="h-screen overflow-hidden bg-slate-50 flex">
             {/* Mobile Sidebar Overlay */}
             <AnimatePresence>
                 {isSidebarOpen && (
