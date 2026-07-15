@@ -43,6 +43,8 @@ export default function Dashboard() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [profileImage, setProfileImage] = useState<string | null>(null);
     const [isSaving, setIsSaving] = useState(false);
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
+    const [showNotifications, setShowNotifications] = useState(false);
 
     const fetchSession = async () => {
         try {
@@ -160,7 +162,8 @@ export default function Dashboard() {
         }
         
         setIsSaving(false);
-        alert('Mipangilio imehifadhiwa kikamilifu! (Settings saved successfully)');
+        setToastMessage('Mipangilio imehifadhiwa kikamilifu!');
+        setTimeout(() => setToastMessage(null), 3000);
     };
 
     if (loading) {
@@ -251,9 +254,62 @@ export default function Dashboard() {
                         </h2>
                     </div>
                     <div className="flex items-center gap-4">
-                        <button className="p-2 bg-slate-50 rounded-full text-slate-400 hover:text-primary transition-colors">
-                            <Bell className="w-5 h-5" />
-                        </button>
+                        <div className="relative">
+                            <button 
+                                onClick={() => setShowNotifications(!showNotifications)}
+                                className="p-2 bg-slate-50 rounded-full text-slate-400 hover:text-primary transition-colors relative"
+                            >
+                                <Bell className="w-5 h-5" />
+                                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-slate-50"></span>
+                            </button>
+
+                            <AnimatePresence>
+                                {showNotifications && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                        className="absolute right-0 mt-2 w-72 sm:w-80 bg-white rounded-2xl shadow-xl border border-slate-100 z-50 overflow-hidden"
+                                    >
+                                        <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                                            <h4 className="font-bold text-slate-800 text-sm">Arifa (Alerts)</h4>
+                                            <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded-md">Mpya 2</span>
+                                        </div>
+                                        <div className="max-h-80 overflow-y-auto divide-y divide-slate-50">
+                                            <div className="p-4 hover:bg-slate-50 transition-colors cursor-pointer flex gap-3">
+                                                <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-500 shrink-0 mt-0.5">
+                                                    <Award className="w-4 h-4" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-bold text-slate-800">Umepata pointi 10!</p>
+                                                    <p className="text-xs text-slate-500 mt-0.5">Umetengeneza risiti mpya kikamilifu.</p>
+                                                    <p className="text-[10px] text-slate-400 mt-1">Sasa hivi</p>
+                                                </div>
+                                            </div>
+                                            <div className="p-4 hover:bg-slate-50 transition-colors cursor-pointer flex gap-3">
+                                                <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 shrink-0 mt-0.5">
+                                                    <Bell className="w-4 h-4" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-bold text-slate-800">Kumbukumbu ya Kodi</p>
+                                                    <p className="text-xs text-slate-500 mt-0.5">Usahau kuwasilisha ritani yako ya kodi kabla ya mwisho wa mwezi.</p>
+                                                    <p className="text-[10px] text-slate-400 mt-1">Saa 2 zilizopita</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="p-3 border-t border-slate-100 text-center">
+                                            <button 
+                                                onClick={() => setShowNotifications(false)}
+                                                className="text-xs font-bold text-primary hover:underline"
+                                            >
+                                                Tazama zote
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                        
                         <div className="flex items-center gap-3 pl-4 border-l border-slate-100">
                             <div className="text-right">
                                 <p className="text-xs font-bold text-slate-900 leading-none">{user?.ownerName || "Mtumiaji"}</p>
@@ -927,6 +983,21 @@ export default function Dashboard() {
                             />
                         </motion.div>
                     </div>
+                )}
+            </AnimatePresence>
+
+            {/* Toast Notification */}
+            <AnimatePresence>
+                {toastMessage && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, x: "-50%" }}
+                        animate={{ opacity: 1, y: 0, x: "-50%" }}
+                        exit={{ opacity: 0, y: 50, x: "-50%" }}
+                        className="fixed bottom-8 left-1/2 z-[100] bg-slate-900 text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3"
+                    >
+                        <BadgeCheck className="w-5 h-5 text-green-400" />
+                        <span className="text-sm font-bold">{toastMessage}</span>
+                    </motion.div>
                 )}
             </AnimatePresence>
         </main>
