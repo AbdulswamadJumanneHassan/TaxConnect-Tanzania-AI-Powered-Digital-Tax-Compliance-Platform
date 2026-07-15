@@ -425,6 +425,73 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         </div>
+                    ) : activeTab === "Miamala" ? (
+                        <div className="space-y-6 max-w-5xl mx-auto">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                                <div>
+                                    <h3 className="text-2xl font-bold text-slate-800">Miamala Yako</h3>
+                                    <p className="text-sm text-slate-500 mt-1">Fuatilia mauzo na makadirio ya kodi kwa urahisi.</p>
+                                </div>
+                                <button className="px-4 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-50 transition-colors shadow-sm">
+                                    <FileText className="w-5 h-5" /> Pakua Ripoti
+                                </button>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                                    <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-500 mb-4">
+                                        <Wallet className="w-6 h-6" />
+                                    </div>
+                                    <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-1">Jumla ya Mauzo</p>
+                                    <h3 className="text-2xl font-bold text-slate-900">{receipts.reduce((sum, r) => sum + r.total, 0).toLocaleString()} TZS</h3>
+                                </div>
+                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                                    <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-500 mb-4">
+                                        <TrendingUp className="w-6 h-6" />
+                                    </div>
+                                    <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-1">Miamala Leo</p>
+                                    <h3 className="text-2xl font-bold text-slate-900">{receipts.filter(r => r.date.startsWith(new Date().toISOString().split("T")[0])).length}</h3>
+                                </div>
+                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                                    <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center text-red-500 mb-4">
+                                        <FileText className="w-6 h-6" />
+                                    </div>
+                                    <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-1">Kodi Inayokadiriwa (5%)</p>
+                                    <h3 className="text-2xl font-bold text-slate-900">{(receipts.reduce((sum, r) => sum + r.total, 0) * 0.05).toLocaleString()} TZS</h3>
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+                                <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Historia ya Miamala</p>
+                                </div>
+                                <div className="divide-y divide-slate-100">
+                                    {receipts.length === 0 ? (
+                                        <div className="text-center py-16 bg-slate-50/30">
+                                            <p className="text-slate-500 font-medium">Hakuna miamala bado.</p>
+                                        </div>
+                                    ) : (
+                                        receipts.map((r) => (
+                                            <div key={r.id} className="flex items-center justify-between p-6 hover:bg-slate-50 transition-colors">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-green-500 shrink-0">
+                                                        <ArrowUpRight className="w-5 h-5" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm font-bold text-slate-800 line-clamp-1">Mauzo - {r.customerName}</p>
+                                                        <p className="text-[11px] text-slate-500 mt-1">{new Date(r.date).toLocaleString('sw-TZ')}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="font-bold text-green-500 text-sm sm:text-base">+{r.total.toLocaleString()} TZS</p>
+                                                    <p className="text-[10px] text-slate-400 uppercase font-bold mt-1">{r.paymentMethod}</p>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     ) : (
                         <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
                             <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
