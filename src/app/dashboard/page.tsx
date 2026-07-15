@@ -19,7 +19,8 @@ import {
     Eye,
     X,
     ScanLine,
-    Cpu
+    Cpu,
+    Menu
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import Link from "next/link";
@@ -38,6 +39,8 @@ export default function Dashboard() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedReceipt, setSelectedReceipt] = useState<StoredReceipt | null>(null);
     const [isScanModalOpen, setIsScanModalOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState("Dashboard");
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const fetchSession = async () => {
         try {
@@ -108,15 +111,31 @@ export default function Dashboard() {
 
     return (
         <main className="min-h-screen bg-slate-50 flex">
+            {/* Mobile Sidebar Overlay */}
+            <AnimatePresence>
+                {isSidebarOpen && (
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsSidebarOpen(false)}
+                        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden"
+                    />
+                )}
+            </AnimatePresence>
+
             {/* Sidebar */}
-            <aside className="w-64 bg-white border-r border-slate-200 flex flex-col hidden lg:flex">
-                <div className="p-6">
+            <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 lg:translate-x-0 lg:static lg:flex ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                <div className="p-6 flex items-center justify-between">
                     <Logo />
+                    <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden p-2 text-slate-400 hover:text-slate-600 bg-slate-50 rounded-full">
+                        <X className="w-5 h-5" />
+                    </button>
                 </div>
 
-                <nav className="flex-1 p-4 space-y-2">
+                <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
                     {[
-                        { icon: LayoutDashboard, label: "Dashboard", active: true },
+                        { icon: LayoutDashboard, label: "Dashboard" },
                         { icon: ReceiptIcon, label: "Risiti Zangu" },
                         { icon: Wallet, label: "Miamala" },
                         { icon: Award, label: "Tuzo & Beji" },
@@ -125,7 +144,11 @@ export default function Dashboard() {
                     ].map((item) => (
                         <button
                             key={item.label}
-                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${item.active ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-500 hover:bg-slate-50"
+                            onClick={() => {
+                                setActiveTab(item.label);
+                                setIsSidebarOpen(false);
+                            }}
+                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === item.label ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-500 hover:bg-slate-50"
                                 }`}
                         >
                             <item.icon className="w-5 h-5" />
@@ -153,8 +176,18 @@ export default function Dashboard() {
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col min-w-0">
-                <header className="h-20 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-slate-800">Muhtasari wa Biashara</h2>
+                <header className="h-20 bg-white border-b border-slate-200 px-4 md:px-8 flex items-center justify-between sticky top-0 z-30">
+                    <div className="flex items-center gap-3">
+                        <button 
+                            className="lg:hidden p-2 -ml-2 bg-slate-50 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors"
+                            onClick={() => setIsSidebarOpen(true)}
+                        >
+                            <Menu className="w-5 h-5 md:w-6 md:h-6" />
+                        </button>
+                        <h2 className="text-lg md:text-xl font-bold text-slate-800">
+                            {activeTab === "Dashboard" ? "Muhtasari wa Biashara" : activeTab}
+                        </h2>
+                    </div>
                     <div className="flex items-center gap-4">
                         <button className="p-2 bg-slate-50 rounded-full text-slate-400 hover:text-primary transition-colors">
                             <Bell className="w-5 h-5" />
@@ -171,9 +204,11 @@ export default function Dashboard() {
                     </div>
                 </header>
 
-                <div className="p-8 overflow-y-auto">
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div className="p-4 md:p-8 overflow-y-auto">
+                    {activeTab === "Dashboard" ? (
+                        <>
+                            {/* Stats Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         {[
                             { label: "Mauzo ya Leo", value: `${dailySales.toLocaleString()} TZS`, icon: Wallet, trend: "+100%" },
                             { label: "Risiti za Mwezi", value: monthlyReceipts.toString(), icon: ReceiptIcon, trend: `+${monthlyReceipts}` },
@@ -311,6 +346,18 @@ export default function Dashboard() {
                             </button>
                         </div>
                     </div>
+                        </>
+                    ) : (
+                        <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
+                            <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
+                                <FileText className="w-10 h-10 text-slate-300" />
+                            </div>
+                            <h3 className="text-2xl font-bold text-slate-800 mb-2">Inakuja Hivi Punde</h3>
+                            <p className="text-slate-500 max-w-md">
+                                Ukurasa wa "{activeTab}" unajengwa. Tafadhali rudi baadaye ili kuona vipengele vipya.
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
 
