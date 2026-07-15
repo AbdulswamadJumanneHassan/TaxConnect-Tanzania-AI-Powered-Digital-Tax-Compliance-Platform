@@ -729,6 +729,85 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         </div>
+                    ) : activeTab === "Mipangilio" ? (
+                        <div className="space-y-6 max-w-4xl mx-auto">
+                            <div className="mb-8">
+                                <h3 className="text-2xl font-bold text-slate-800">Mipangilio ya Akaunti</h3>
+                                <p className="text-sm text-slate-500 mt-1">Dhibiti wasifu wako na mapendeleo ya biashara yako.</p>
+                            </div>
+
+                            <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+                                <div className="p-6 sm:p-8 border-b border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                                    <div className="flex items-center gap-6">
+                                        <div className="w-20 h-20 bg-secondary/10 rounded-2xl flex items-center justify-center text-secondary font-black text-3xl border border-secondary/20">
+                                            {user?.ownerName?.substring(0, 2).toUpperCase() || "MT"}
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-xl text-slate-800">{user?.ownerName || "Mtumiaji"}</h4>
+                                            <p className="text-sm text-slate-500">{user?.businessName || "Biashara Yangu"}</p>
+                                        </div>
+                                    </div>
+                                    <button className="px-4 py-2 bg-slate-50 text-slate-700 rounded-xl text-sm font-bold border border-slate-200 hover:bg-slate-100 transition-colors w-full sm:w-auto">
+                                        Badili Picha
+                                    </button>
+                                </div>
+
+                                <div className="p-6 sm:p-8 space-y-8">
+                                    {/* Taarifa za Biashara */}
+                                    <div>
+                                        <h5 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                            <FileText className="w-4 h-4 text-slate-400" /> Taarifa za Biashara
+                                        </h5>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Jina la Biashara</label>
+                                                <input type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:bg-white transition-all" defaultValue={user?.businessName || ""} placeholder="Ingiza jina la biashara" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">TIN Namba (TRA)</label>
+                                                <input type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:bg-white transition-all" defaultValue={user?.tin || ""} placeholder="Mfano: 123-456-789" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Mipangilio ya Mfumo */}
+                                    <div>
+                                        <h5 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                            <Settings className="w-4 h-4 text-slate-400" /> Mipangilio ya Mfumo
+                                        </h5>
+                                        <div className="space-y-3">
+                                            <label className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 cursor-pointer hover:bg-slate-100 transition-colors">
+                                                <div>
+                                                    <p className="font-bold text-sm text-slate-800">Tuma Risiti Kiotomatiki TRA</p>
+                                                    <p className="text-xs text-slate-500">Kila risiti inayotengenezwa itatumwa moja kwa moja kwenye mfumo wa TRA.</p>
+                                                </div>
+                                                <div className="relative inline-block w-12 align-middle select-none transition duration-200 ease-in">
+                                                    <input type="checkbox" name="toggle" className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-primary appearance-none cursor-pointer right-0" defaultChecked />
+                                                    <div className="toggle-label block overflow-hidden h-6 rounded-full bg-primary cursor-pointer"></div>
+                                                </div>
+                                            </label>
+
+                                            <label className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 cursor-pointer hover:bg-slate-100 transition-colors">
+                                                <div>
+                                                    <p className="font-bold text-sm text-slate-800">Pokea Meseji za Makumbusho</p>
+                                                    <p className="text-xs text-slate-500">Tutakukumbusha wakati wa kulipa kodi kabla ya tarehe ya mwisho.</p>
+                                                </div>
+                                                <div className="relative inline-block w-12 align-middle select-none transition duration-200 ease-in">
+                                                    <input type="checkbox" name="toggle" className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-slate-300 appearance-none cursor-pointer left-0" />
+                                                    <div className="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer"></div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex justify-end pt-4 border-t border-slate-100">
+                                        <button className="px-6 py-3 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+                                            Hifadhi Mabadiliko
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     ) : (
                         <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
                             <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
