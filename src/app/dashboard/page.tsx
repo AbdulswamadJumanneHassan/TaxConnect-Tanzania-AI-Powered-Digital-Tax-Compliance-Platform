@@ -618,6 +618,117 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         </div>
+                    ) : activeTab === "Ripoti" ? (
+                        <div className="space-y-6 max-w-5xl mx-auto">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                                <div>
+                                    <h3 className="text-2xl font-bold text-slate-800">Ripoti za Biashara</h3>
+                                    <p className="text-sm text-slate-500 mt-1">Uchambuzi wa kina wa mauzo na kodi zako.</p>
+                                </div>
+                                <div className="flex gap-2">
+                                    <select className="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl px-4 py-2 outline-none focus:border-primary shadow-sm cursor-pointer hover:bg-slate-50 transition-colors">
+                                        <option>Mwezi Huu</option>
+                                        <option>Mwezi Uliopita</option>
+                                        <option>Mwaka Huu</option>
+                                    </select>
+                                    <button className="px-4 py-2 bg-slate-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors shadow-sm">
+                                        <FileText className="w-4 h-4" /> Hamisha
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                                <div className="lg:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-center min-h-[300px]">
+                                    <div className="flex items-center justify-between mb-6">
+                                        <h4 className="font-bold text-slate-800">Mwenendo wa Mauzo</h4>
+                                        <p className="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-lg">+12.5%</p>
+                                    </div>
+                                    {/* Placeholder for a chart */}
+                                    <div className="flex-1 flex items-end gap-2 mt-4 pt-4 border-b border-slate-100 relative">
+                                        {/* Y-axis labels placeholder */}
+                                        <div className="absolute left-0 top-0 bottom-0 w-full flex flex-col justify-between pointer-events-none opacity-20 text-[10px] text-slate-500">
+                                            <div className="border-t border-slate-300 border-dashed w-full"></div>
+                                            <div className="border-t border-slate-300 border-dashed w-full"></div>
+                                            <div className="border-t border-slate-300 border-dashed w-full"></div>
+                                        </div>
+
+                                        {[40, 70, 45, 90, 65, 85, 100].map((h, i) => (
+                                            <div key={i} className="flex-1 bg-primary/10 rounded-t-lg relative group transition-all hover:bg-primary cursor-pointer z-10" style={{ height: `${h}%` }}>
+                                                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs font-bold py-1.5 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
+                                                    Siku {i + 1}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="flex justify-between mt-3 text-[10px] font-bold text-slate-400 uppercase">
+                                        <span>J3</span><span>J4</span><span>J5</span><span>Alh</span><span>Ij</span><span>Jmo</span><span>Jpi</span>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col min-h-[300px]">
+                                    <h4 className="font-bold text-slate-800 mb-6">Mchanganuo wa Malipo</h4>
+                                    
+                                    <div className="space-y-6 flex-1 flex flex-col justify-center">
+                                        <div className="group">
+                                            <div className="flex justify-between text-sm mb-2">
+                                                <span className="text-slate-600 font-medium flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-blue-500"></div>Pesa Taslimu</span>
+                                                <span className="font-bold text-slate-800">
+                                                    {receipts.filter(r => r.paymentMethod === 'Cash' || r.paymentMethod === 'CASH').length}
+                                                </span>
+                                            </div>
+                                            <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                                <div className="bg-blue-500 h-full rounded-full transition-all group-hover:bg-blue-400" style={{ width: '45%' }}></div>
+                                            </div>
+                                        </div>
+                                        <div className="group">
+                                            <div className="flex justify-between text-sm mb-2">
+                                                <span className="text-slate-600 font-medium flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500"></div>Miamala ya Simu</span>
+                                                <span className="font-bold text-slate-800">
+                                                    {receipts.filter(r => r.paymentMethod !== 'Cash' && r.paymentMethod !== 'CASH' && r.paymentMethod !== 'Card' && r.paymentMethod !== 'Bank').length}
+                                                </span>
+                                            </div>
+                                            <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                                <div className="bg-green-500 h-full rounded-full transition-all group-hover:bg-green-400" style={{ width: '35%' }}></div>
+                                            </div>
+                                        </div>
+                                        <div className="group">
+                                            <div className="flex justify-between text-sm mb-2">
+                                                <span className="text-slate-600 font-medium flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-purple-500"></div>Benki / Kadi</span>
+                                                <span className="font-bold text-slate-800">
+                                                    {receipts.filter(r => r.paymentMethod === 'Card' || r.paymentMethod === 'Bank').length}
+                                                </span>
+                                            </div>
+                                            <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                                <div className="bg-purple-500 h-full rounded-full transition-all group-hover:bg-purple-400" style={{ width: '20%' }}></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 sm:p-8">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                                        <FileText className="w-5 h-5" />
+                                    </div>
+                                    <h4 className="font-bold text-lg text-slate-800">Kodi ya Ongezeko la Thamani (VAT)</h4>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                    <div className="p-6 bg-slate-50 hover:bg-slate-100 transition-colors rounded-2xl border border-slate-100/80">
+                                        <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold mb-2">Mauzo Yasiyotozwa VAT</p>
+                                        <p className="text-2xl font-black text-slate-400">0 <span className="text-sm font-bold text-slate-400">TZS</span></p>
+                                    </div>
+                                    <div className="p-6 bg-slate-50 hover:bg-slate-100 transition-colors rounded-2xl border border-slate-100/80">
+                                        <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold mb-2">Mauzo Yanayotozwa VAT</p>
+                                        <p className="text-2xl font-black text-slate-800">{receipts.reduce((sum, r) => sum + r.total, 0).toLocaleString()} <span className="text-sm font-bold text-slate-500">TZS</span></p>
+                                    </div>
+                                    <div className="p-6 bg-primary/5 hover:bg-primary/10 transition-colors rounded-2xl border border-primary/20 shadow-sm shadow-primary/5">
+                                        <p className="text-[11px] text-primary uppercase tracking-widest font-bold mb-2">VAT Inayokadiriwa (18%)</p>
+                                        <p className="text-2xl font-black text-primary">{(receipts.reduce((sum, r) => sum + r.total, 0) * 0.18).toLocaleString()} <span className="text-sm font-bold opacity-70">TZS</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     ) : (
                         <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
                             <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
