@@ -101,6 +101,37 @@ export default function Dashboard() {
 
     const estimatedTax = dailySales * 0.05; // 5% flat estimation for demo
 
+    const downloadReport = () => {
+        if (receipts.length === 0) {
+            alert("Hakuna miamala ya kupakua.");
+            return;
+        }
+
+        const headers = ["Tarehe", "Mteja", "Kiasi (TZS)", "Njia ya Malipo", "Aina"];
+        const rows = receipts.map(r => [
+            new Date(r.date).toLocaleString('sw-TZ').replace(/,/g, ''),
+            `"${r.customerName}"`,
+            r.total,
+            r.paymentMethod,
+            r.sourceType === "ai-scanned" ? "AI Scanned" : "Manual"
+        ]);
+
+        const csvContent = [
+            headers.join(","),
+            ...rows.map(e => e.join(","))
+        ].join("\n");
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `Ripoti_ya_Miamala_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -432,7 +463,10 @@ export default function Dashboard() {
                                     <h3 className="text-2xl font-bold text-slate-800">Miamala Yako</h3>
                                     <p className="text-sm text-slate-500 mt-1">Fuatilia mauzo na makadirio ya kodi kwa urahisi.</p>
                                 </div>
-                                <button className="px-4 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-50 transition-colors shadow-sm">
+                                <button 
+                                    onClick={downloadReport}
+                                    className="px-4 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-50 transition-colors shadow-sm"
+                                >
                                     <FileText className="w-5 h-5" /> Pakua Ripoti
                                 </button>
                             </div>
