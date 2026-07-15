@@ -41,6 +41,7 @@ export default function Dashboard() {
     const [isScanModalOpen, setIsScanModalOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("Dashboard");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [profileImage, setProfileImage] = useState<string | null>(null);
 
     const fetchSession = async () => {
         try {
@@ -130,6 +131,14 @@ export default function Dashboard() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setProfileImage(url);
+        }
     };
 
     if (loading) {
@@ -228,8 +237,12 @@ export default function Dashboard() {
                                 <p className="text-xs font-bold text-slate-900 leading-none">{user?.ownerName || "Mtumiaji"}</p>
                                 <p className="text-[10px] text-slate-400">{user?.businessName || "Biashara"}</p>
                             </div>
-                            <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-bold">
-                                {user?.ownerName?.substring(0, 2).toUpperCase() || "MT"}
+                            <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-bold overflow-hidden shrink-0">
+                                {profileImage ? (
+                                    <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+                                ) : (
+                                    user?.ownerName?.substring(0, 2).toUpperCase() || "MT"
+                                )}
                             </div>
                         </div>
                     </div>
@@ -739,17 +752,36 @@ export default function Dashboard() {
                             <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
                                 <div className="p-6 sm:p-8 border-b border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                                     <div className="flex items-center gap-6">
-                                        <div className="w-20 h-20 bg-secondary/10 rounded-2xl flex items-center justify-center text-secondary font-black text-3xl border border-secondary/20">
-                                            {user?.ownerName?.substring(0, 2).toUpperCase() || "MT"}
+                                        <div className="w-20 h-20 bg-secondary/10 rounded-2xl flex items-center justify-center text-secondary font-black text-3xl border border-secondary/20 overflow-hidden shrink-0 relative group">
+                                            {profileImage ? (
+                                                <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+                                            ) : (
+                                                user?.ownerName?.substring(0, 2).toUpperCase() || "MT"
+                                            )}
+                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" onClick={() => document.getElementById('profileImageInput')?.click()}>
+                                                <span className="text-white text-[10px] uppercase font-bold tracking-wider">Badili</span>
+                                            </div>
                                         </div>
                                         <div>
                                             <h4 className="font-bold text-xl text-slate-800">{user?.ownerName || "Mtumiaji"}</h4>
                                             <p className="text-sm text-slate-500">{user?.businessName || "Biashara Yangu"}</p>
                                         </div>
                                     </div>
-                                    <button className="px-4 py-2 bg-slate-50 text-slate-700 rounded-xl text-sm font-bold border border-slate-200 hover:bg-slate-100 transition-colors w-full sm:w-auto">
-                                        Badili Picha
-                                    </button>
+                                    <div>
+                                        <button 
+                                            onClick={() => document.getElementById('profileImageInput')?.click()}
+                                            className="px-4 py-2 bg-slate-50 text-slate-700 rounded-xl text-sm font-bold border border-slate-200 hover:bg-slate-100 transition-colors w-full sm:w-auto"
+                                        >
+                                            Badili Picha
+                                        </button>
+                                        <input 
+                                            type="file" 
+                                            id="profileImageInput" 
+                                            accept="image/*" 
+                                            className="hidden" 
+                                            onChange={handleImageChange} 
+                                        />
+                                    </div>
                                 </div>
 
                                 <div className="p-6 sm:p-8 space-y-8">
