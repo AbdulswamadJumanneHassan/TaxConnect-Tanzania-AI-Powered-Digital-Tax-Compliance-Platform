@@ -57,7 +57,7 @@ export function ImpactBenefits() {
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                         We measure our success by the success of the businesses we serve.
-                        Here is how TaxConnect is changing the landscape.
+                        Here is how TaxPilot-AI-Tanzania is changing the landscape.
                     </p>
                 </div>
 

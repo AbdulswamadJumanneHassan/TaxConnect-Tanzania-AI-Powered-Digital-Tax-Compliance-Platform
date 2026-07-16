@@ -35,7 +35,7 @@ export function Hero() {
                     </h1>
 
                     <p className="text-lg text-secondary/70 mb-8 max-w-lg leading-relaxed">
-                        TaxConnect Tanzania inakusaidia kurahisisha ulipaji kodi, kutengeneza risiti za kidijitali, na kukuza biashara yako kwa kutumia akili mnemba (AI).
+                        TaxPilot-AI-Tanzania inakusaidia kurahisisha ulipaji kodi, kutengeneza risiti za kidijitali, na kukuza biashara yako kwa kutumia akili mnemba (AI).
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 mb-10">

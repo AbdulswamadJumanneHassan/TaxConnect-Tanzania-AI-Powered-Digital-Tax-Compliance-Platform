@@ -41,7 +41,7 @@ export function DashboardPreview() {
                                     <div className="w-8 h-8 rounded-lg bg-[#FFD700] flex items-center justify-center">
                                         <LayoutDashboard className="w-5 h-5 text-[#1A1A1A]" />
                                     </div>
-                                    <span className="font-bold text-white">TaxConnect</span>
+                                    <span className="font-bold text-white">TaxPilot-AI-Tanzania</span>
                                 </div>
                                 {[1, 2, 3, 4, 5].map((i) => (
                                     <div key={i} className={`h-10 rounded-xl ${i === 1 ? 'bg-white/10' : ''} flex items-center px-4 gap-3`}>

@@ -54,7 +54,7 @@ export function TRAAlignment() {
                         </h2>
 
                         <p className="text-lg text-[#1A1A1A]/80 mb-10 leading-relaxed">
-                            TaxConnect is built to work hand-in-hand with TRA&apos;s digital transformation goals.
+                            TaxPilot-AI-Tanzania is built to work hand-in-hand with TRA&apos;s digital transformation goals.
                             By simplifying tax processes, we help the nation build a stronger, more transparent
                             economic foundation.
                         </p>

@@ -68,7 +68,7 @@ export function SecurityData() {
                                     <div className="w-32 h-32 bg-[#FFD700] rounded-3xl flex items-center justify-center mb-8 shadow-2xl shadow-yellow-500/20 rotate-6">
                                         <ShieldCheck className="w-16 h-16 text-[#1A1A1A]" />
                                     </div>
-                                    <div className="text-white font-black text-2xl mb-2 tracking-tighter">SECURED BY TAXCONNECT</div>
+                                    <div className="text-white font-black text-2xl mb-2 tracking-tighter">SECURED BY TAXPILOT-AI-TANZANIA</div>
                                     <div className="text-gray-500 text-xs uppercase tracking-widest">Enterprise-Grade Protection</div>
                                 </div>
 
@@ -86,7 +86,7 @@ export function SecurityData() {
                         </h2>
                         <p className="text-gray-400 text-lg mb-12">
                             We understand the sensitivity of financial records. That&apos;s why we&apos;ve built
-                            TaxConnect on top of world-class security infrastructure.
+                            TaxPilot-AI-Tanzania on top of world-class security infrastructure.
                         </p>
 
                         <div className="grid sm:grid-cols-2 gap-x-8 gap-y-10">

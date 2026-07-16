@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TaxConnect Tanzania | AI-Powered Tax Compliance",
+  title: "TaxPilot-AI-Tanzania",
   description: "Secure, AI-powered digital tax compliance and business growth platform for Tanzania.",
 };
 

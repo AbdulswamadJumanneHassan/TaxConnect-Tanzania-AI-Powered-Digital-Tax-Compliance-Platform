@@ -65,7 +65,7 @@ export function DigitalReceipt({ receipt }: ReceiptProps) {
 <html lang="sw">
 <head>
   <meta charset="UTF-8" />
-  <title>Risiti ${receiptId} — TaxConnect Tanzania</title>
+  <title>Risiti ${receiptId} — TaxPilot-AI-Tanzania</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Courier New', monospace; background: #fff; padding: 32px; max-width: 420px; margin: 0 auto; }
@@ -110,7 +110,7 @@ export function DigitalReceipt({ receipt }: ReceiptProps) {
     <div class="totals-grand"><span>TOTAL:</span><span>${grandTotal} TZS</span></div>
   </div>
   <div class="watermark">
-    <p>Risiti hii imethibitishwa na TaxConnect Tanzania</p>
+    <p>Risiti hii imethibitishwa na TaxPilot-AI-Tanzania</p>
     <span class="tra-badge">TRA VERIFIED</span>
   </div>
 </body>

@@ -56,14 +56,14 @@ export function Footer() {
                             </li>
                             <li className="flex items-center gap-3">
                                 <Mail className="w-4 h-4 text-[#FFD700]" />
-                                <span>msaada@taxconnect.co.tz</span>
+                                <span>msaada@taxpilot-ai-tanzania.co.tz</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
                 <div className="pt-12 border-t border-white/5 text-center text-gray-600 text-[10px] uppercase tracking-widest leading-relaxed">
-                    <p>&copy; {new Date().getFullYear()} TaxConnect Tanzania. Haki zote zimehifadhiwa.</p>
+                    <p>&copy; {new Date().getFullYear()} TaxPilot-AI-Tanzania. Haki zote zimehifadhiwa.</p>
                 </div>
             </div>
         </footer>
