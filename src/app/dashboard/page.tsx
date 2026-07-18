@@ -22,7 +22,9 @@ import {
     Cpu,
     Menu,
     Trash2,
-    Check
+    Check,
+    Search,
+    SlidersHorizontal
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import Link from "next/link";
@@ -49,6 +51,9 @@ export default function Dashboard() {
     const [showNotifications, setShowNotifications] = useState(false);
     const [deleteReceiptId, setDeleteReceiptId] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filterPayment, setFilterPayment] = useState("Zote");
+    const [sortOrder, setSortOrder] = useState("newest");
 
     const fetchSession = async () => {
         try {
@@ -108,6 +113,23 @@ export default function Dashboard() {
     }).length;
 
     const estimatedTax = dailySales * 0.05; // 5% flat estimation for demo
+
+    // Filtered & sorted receipts for "Risiti Zangu" tab
+    const filteredReceipts = receipts
+        .filter((r) => {
+            const matchesSearch = searchQuery === "" ||
+                r.customerName.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesPayment = filterPayment === "Zote" ||
+                r.paymentMethod.toLowerCase() === filterPayment.toLowerCase();
+            return matchesSearch && matchesPayment;
+        })
+        .sort((a, b) => {
+            if (sortOrder === "newest") return new Date(b.date).getTime() - new Date(a.date).getTime();
+            if (sortOrder === "oldest") return new Date(a.date).getTime() - new Date(b.date).getTime();
+            if (sortOrder === "highest") return b.total - a.total;
+            if (sortOrder === "lowest") return a.total - b.total;
+            return 0;
+        });
 
     const downloadReport = () => {
         if (receipts.length === 0) {
@@ -497,7 +519,7 @@ export default function Dashboard() {
                         </>
                     ) : activeTab === "Risiti Zangu" ? (
                         <div className="space-y-6 max-w-5xl mx-auto">
-                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                                 <div>
                                     <h3 className="text-2xl font-bold text-slate-800">Risiti Zangu Zote</h3>
                                     <p className="text-sm text-slate-500 mt-1">Tazama na dhibiti risiti zako zote ulizotoa.</p>
@@ -517,10 +539,62 @@ export default function Dashboard() {
                                     </button>
                                 </div>
                             </div>
+
+                            {/* Search & Filter Bar */}
+                            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex flex-col sm:flex-row gap-3">
+                                {/* Search */}
+                                <div className="relative flex-1">
+                                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                    <input
+                                        type="text"
+                                        placeholder="Tafuta kwa jina la mteja..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-primary focus:bg-white transition-all"
+                                    />
+                                </div>
+                                {/* Payment filter */}
+                                <div className="relative">
+                                    <SlidersHorizontal className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                                    <select
+                                        value={filterPayment}
+                                        onChange={(e) => setFilterPayment(e.target.value)}
+                                        className="pl-10 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-primary focus:bg-white transition-all appearance-none cursor-pointer w-full sm:w-auto"
+                                    >
+                                        <option value="Zote">Malipo Yote</option>
+                                        <option value="Cash">Pesa Taslimu</option>
+                                        <option value="M-Pesa">M-Pesa</option>
+                                        <option value="Other">Nyingine</option>
+                                    </select>
+                                </div>
+                                {/* Sort */}
+                                <select
+                                    value={sortOrder}
+                                    onChange={(e) => setSortOrder(e.target.value)}
+                                    className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-primary focus:bg-white transition-all appearance-none cursor-pointer"
+                                >
+                                    <option value="newest">Mpya Kwanza</option>
+                                    <option value="oldest">Zamani Kwanza</option>
+                                    <option value="highest">Kiasi Kikubwa</option>
+                                    <option value="lowest">Kiasi Kidogo</option>
+                                </select>
+                            </div>
                             
                             <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
                                 <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Jumla ya Risiti: {receipts.length}</p>
+                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                                        {filteredReceipts.length === receipts.length
+                                            ? `Jumla ya Risiti: ${receipts.length}`
+                                            : `Inaonyesha ${filteredReceipts.length} kati ya ${receipts.length}`}
+                                    </p>
+                                    {(searchQuery || filterPayment !== "Zote") && (
+                                        <button
+                                            onClick={() => { setSearchQuery(""); setFilterPayment("Zote"); setSortOrder("newest"); }}
+                                            className="text-xs font-bold text-red-500 hover:text-red-600 flex items-center gap-1 transition-colors"
+                                        >
+                                            <X className="w-3.5 h-3.5" /> Futa Vichujio
+                                        </button>
+                                    )}
                                 </div>
                                 <div className="divide-y divide-slate-100">
                                     {receipts.length === 0 ? (
@@ -531,8 +605,16 @@ export default function Dashboard() {
                                             <p className="text-slate-500 font-medium">Huna risiti yoyote kwa sasa.</p>
                                             <p className="text-slate-400 text-sm mt-1">Anza kwa kutengeneza au kuscan risiti mpya.</p>
                                         </div>
+                                    ) : filteredReceipts.length === 0 ? (
+                                        <div className="text-center py-16 bg-slate-50/30">
+                                            <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <Search className="w-10 h-10 text-slate-300" />
+                                            </div>
+                                            <p className="text-slate-500 font-medium">Hakuna risiti zinazolingana na utafutaji wako.</p>
+                                            <p className="text-slate-400 text-sm mt-1">Jaribu kutumia maneno tofauti au futa vichujio.</p>
+                                        </div>
                                     ) : (
-                                        receipts.map((r) => (
+                                        filteredReceipts.map((r) => (
                                             <div key={r.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-6 hover:bg-slate-50 transition-colors group gap-4">
                                                 <div className="flex items-center gap-4">
                                                     <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-primary border border-slate-200 relative shadow-sm shrink-0">
