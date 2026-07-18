@@ -54,6 +54,7 @@ export default function Dashboard() {
     const [searchQuery, setSearchQuery] = useState("");
     const [filterPayment, setFilterPayment] = useState("Zote");
     const [sortOrder, setSortOrder] = useState("newest");
+    const [reportPeriod, setReportPeriod] = useState("this_month");
 
     const fetchSession = async () => {
         try {
@@ -113,6 +114,80 @@ export default function Dashboard() {
     }).length;
 
     const estimatedTax = dailySales * 0.05; // 5% flat estimation for demo
+
+    // --- Reports: period filtering ---
+    const reportReceipts = receipts.filter((r) => {
+        const d = new Date(r.date);
+        const now = new Date();
+        if (reportPeriod === "this_month") {
+            return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        }
+        if (reportPeriod === "last_month") {
+            const lm = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+            return d.getMonth() === lm.getMonth() && d.getFullYear() === lm.getFullYear();
+        }
+        if (reportPeriod === "this_year") {
+            return d.getFullYear() === now.getFullYear();
+        }
+        return true;
+    });
+
+    // Chart buckets — last 7 days (month view) or 12 months (year view)
+    const chartBuckets: { label: string; total: number }[] = (() => {
+        const now = new Date();
+        if (reportPeriod === "this_year") {
+            const months = ["Jan","Feb","Mac","Apr","Mei","Jun","Jul","Ago","Sep","Okt","Nov","Des"];
+            return months.map((label, idx) => ({
+                label,
+                total: reportReceipts
+                    .filter(r => new Date(r.date).getMonth() === idx)
+                    .reduce((s, r) => s + r.total, 0),
+            }));
+        }
+        // last 7 days
+        return Array.from({ length: 7 }, (_, i) => {
+            const day = new Date(now);
+            day.setDate(now.getDate() - (6 - i));
+            const key = day.toISOString().split("T")[0];
+            return {
+                label: day.toLocaleDateString("sw-TZ", { weekday: "short" }),
+                total: receipts
+                    .filter(r => r.date.startsWith(key))
+                    .reduce((s, r) => s + r.total, 0),
+            };
+        });
+    })();
+
+    const chartMax = Math.max(...chartBuckets.map(b => b.total), 1);
+
+    // Payment breakdown with real percentages
+    const cashCount = reportReceipts.filter(r => r.paymentMethod === "Cash").length;
+    const mpesaCount = reportReceipts.filter(r => r.paymentMethod === "M-Pesa").length;
+    const otherCount = reportReceipts.filter(r => r.paymentMethod !== "Cash" && r.paymentMethod !== "M-Pesa").length;
+    const totalCount = reportReceipts.length || 1;
+    const cashPct = Math.round((cashCount / totalCount) * 100);
+    const mpesaPct = Math.round((mpesaCount / totalCount) * 100);
+    const otherPct = 100 - cashPct - mpesaPct;
+
+    const reportTotal = reportReceipts.reduce((s, r) => s + r.total, 0);
+
+    const downloadReportFiltered = () => {
+        if (reportReceipts.length === 0) { alert("Hakuna miamala ya kupakua kwa kipindi hiki."); return; }
+        const headers = ["Tarehe", "Mteja", "Kiasi (TZS)", "Njia ya Malipo", "Aina"];
+        const rows = reportReceipts.map(r => [
+            new Date(r.date).toLocaleString("sw-TZ").replace(/,/g, ""),
+            `"${r.customerName}"`,
+            r.total,
+            r.paymentMethod,
+            r.sourceType === "ai-scanned" ? "AI Scanned" : "Manual",
+        ]);
+        const csv = [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = `Ripoti_${reportPeriod}_${new Date().toISOString().split("T")[0]}.csv`;
+        a.style.visibility = "hidden"; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    };
 
     // Filtered & sorted receipts for "Risiti Zangu" tab
     const filteredReceipts = receipts
@@ -858,86 +933,96 @@ export default function Dashboard() {
                                     <p className="text-sm text-slate-500 mt-1">Uchambuzi wa kina wa mauzo na kodi zako.</p>
                                 </div>
                                 <div className="flex gap-2">
-                                    <select className="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl px-4 py-2 outline-none focus:border-primary shadow-sm cursor-pointer hover:bg-slate-50 transition-colors">
-                                        <option>Mwezi Huu</option>
-                                        <option>Mwezi Uliopita</option>
-                                        <option>Mwaka Huu</option>
+                                    <select
+                                        value={reportPeriod}
+                                        onChange={(e) => setReportPeriod(e.target.value)}
+                                        className="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl px-4 py-2 outline-none focus:border-primary shadow-sm cursor-pointer hover:bg-slate-50 transition-colors"
+                                    >
+                                        <option value="this_month">Mwezi Huu</option>
+                                        <option value="last_month">Mwezi Uliopita</option>
+                                        <option value="this_year">Mwaka Huu</option>
                                     </select>
-                                    <button className="px-4 py-2 bg-slate-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors shadow-sm">
+                                    <button
+                                        onClick={downloadReportFiltered}
+                                        className="px-4 py-2 bg-slate-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors shadow-sm"
+                                    >
                                         <FileText className="w-4 h-4" /> Hamisha
                                     </button>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                                <div className="lg:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-center min-h-[300px]">
+                                {/* Real bar chart */}
+                                <div className="lg:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col min-h-[300px]">
                                     <div className="flex items-center justify-between mb-6">
                                         <h4 className="font-bold text-slate-800">Mwenendo wa Mauzo</h4>
-                                        <p className="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-lg">+12.5%</p>
+                                        <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg">
+                                            {reportReceipts.length} risiti
+                                        </span>
                                     </div>
-                                    {/* Placeholder for a chart */}
-                                    <div className="flex-1 flex items-end gap-2 mt-4 pt-4 border-b border-slate-100 relative">
-                                        {/* Y-axis labels placeholder */}
-                                        <div className="absolute left-0 top-0 bottom-0 w-full flex flex-col justify-between pointer-events-none opacity-20 text-[10px] text-slate-500">
-                                            <div className="border-t border-slate-300 border-dashed w-full"></div>
-                                            <div className="border-t border-slate-300 border-dashed w-full"></div>
-                                            <div className="border-t border-slate-300 border-dashed w-full"></div>
+                                    {reportReceipts.length === 0 ? (
+                                        <div className="flex-1 flex flex-col items-center justify-center text-center py-8">
+                                            <TrendingUp className="w-12 h-12 text-slate-200 mb-3" />
+                                            <p className="text-slate-400 text-sm">Hakuna data kwa kipindi hiki.</p>
                                         </div>
+                                    ) : (
+                                        <>
+                                            <div className="flex-1 flex items-end gap-1.5 pt-4 border-b border-slate-100 relative" style={{ minHeight: 180 }}>
+                                                <div className="absolute left-0 top-0 bottom-0 w-full flex flex-col justify-between pointer-events-none opacity-10">
+                                                    <div className="border-t border-slate-400 border-dashed w-full" />
+                                                    <div className="border-t border-slate-400 border-dashed w-full" />
+                                                    <div className="border-t border-slate-400 border-dashed w-full" />
+                                                </div>
+                                                {chartBuckets.map((b, i) => {
+                                                    const pct = chartMax > 0 ? Math.max((b.total / chartMax) * 100, b.total > 0 ? 4 : 0) : 0;
+                                                    return (
+                                                        <div key={i} className="flex-1 flex flex-col items-center justify-end h-full group">
+                                                            <div
+                                                                className="w-full bg-primary/15 hover:bg-primary rounded-t-md transition-all cursor-default relative"
+                                                                style={{ height: `${pct}%` }}
+                                                            >
+                                                                {b.total > 0 && (
+                                                                    <div className="absolute -top-9 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] font-bold py-1 px-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg z-10">
+                                                                        {b.total.toLocaleString()} TZS
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                            <div className={`grid mt-2 text-[9px] font-bold text-slate-400 uppercase`} style={{ gridTemplateColumns: `repeat(${chartBuckets.length}, 1fr)` }}>
+                                                {chartBuckets.map((b, i) => (
+                                                    <span key={i} className="text-center truncate px-0.5">{b.label}</span>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
 
-                                        {[40, 70, 45, 90, 65, 85, 100].map((h, i) => (
-                                            <div key={i} className="flex-1 bg-primary/10 rounded-t-lg relative group transition-all hover:bg-primary cursor-pointer z-10" style={{ height: `${h}%` }}>
-                                                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs font-bold py-1.5 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
-                                                    Siku {i + 1}
+                                {/* Payment breakdown — real % */}
+                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col min-h-[300px]">
+                                    <h4 className="font-bold text-slate-800 mb-6">Mchanganuo wa Malipo</h4>
+                                    <div className="space-y-6 flex-1 flex flex-col justify-center">
+                                        {[{label:"Pesa Taslimu",count:cashCount,pct:cashPct,color:"bg-blue-500",hover:"group-hover:bg-blue-400"},{label:"M-Pesa",count:mpesaCount,pct:mpesaPct,color:"bg-green-500",hover:"group-hover:bg-green-400"},{label:"Nyingine",count:otherCount,pct:otherPct,color:"bg-purple-500",hover:"group-hover:bg-purple-400"}].map(({label,count,pct,color,hover}) => (
+                                            <div key={label} className="group">
+                                                <div className="flex justify-between text-sm mb-2">
+                                                    <span className="text-slate-600 font-medium flex items-center gap-2">
+                                                        <div className={`w-2 h-2 rounded-full ${color}`} />
+                                                        {label}
+                                                    </span>
+                                                    <span className="font-bold text-slate-800">{count} ({pct}%)</span>
+                                                </div>
+                                                <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                                    <div className={`${color} ${hover} h-full rounded-full transition-all`} style={{ width: `${pct}%` }} />
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="flex justify-between mt-3 text-[10px] font-bold text-slate-400 uppercase">
-                                        <span>J3</span><span>J4</span><span>J5</span><span>Alh</span><span>Ij</span><span>Jmo</span><span>Jpi</span>
-                                    </div>
-                                </div>
-
-                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col min-h-[300px]">
-                                    <h4 className="font-bold text-slate-800 mb-6">Mchanganuo wa Malipo</h4>
-                                    
-                                    <div className="space-y-6 flex-1 flex flex-col justify-center">
-                                        <div className="group">
-                                            <div className="flex justify-between text-sm mb-2">
-                                                <span className="text-slate-600 font-medium flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-blue-500"></div>Pesa Taslimu</span>
-                                                <span className="font-bold text-slate-800">
-                                                    {receipts.filter(r => r.paymentMethod === 'Cash' || r.paymentMethod === 'CASH').length}
-                                                </span>
-                                            </div>
-                                            <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                                                <div className="bg-blue-500 h-full rounded-full transition-all group-hover:bg-blue-400" style={{ width: '45%' }}></div>
-                                            </div>
-                                        </div>
-                                        <div className="group">
-                                            <div className="flex justify-between text-sm mb-2">
-                                                <span className="text-slate-600 font-medium flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500"></div>Miamala ya Simu</span>
-                                                <span className="font-bold text-slate-800">
-                                                    {receipts.filter(r => r.paymentMethod !== 'Cash' && r.paymentMethod !== 'CASH' && r.paymentMethod !== 'Card' && r.paymentMethod !== 'Bank').length}
-                                                </span>
-                                            </div>
-                                            <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                                                <div className="bg-green-500 h-full rounded-full transition-all group-hover:bg-green-400" style={{ width: '35%' }}></div>
-                                            </div>
-                                        </div>
-                                        <div className="group">
-                                            <div className="flex justify-between text-sm mb-2">
-                                                <span className="text-slate-600 font-medium flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-purple-500"></div>Benki / Kadi</span>
-                                                <span className="font-bold text-slate-800">
-                                                    {receipts.filter(r => r.paymentMethod === 'Card' || r.paymentMethod === 'Bank').length}
-                                                </span>
-                                            </div>
-                                            <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                                                <div className="bg-purple-500 h-full rounded-full transition-all group-hover:bg-purple-400" style={{ width: '20%' }}></div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
+                            {/* VAT scoped to selected period */}
                             <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 sm:p-8">
                                 <div className="flex items-center gap-3 mb-6">
                                     <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
@@ -947,16 +1032,16 @@ export default function Dashboard() {
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                                     <div className="p-6 bg-slate-50 hover:bg-slate-100 transition-colors rounded-2xl border border-slate-100/80">
-                                        <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold mb-2">Mauzo Yasiyotozwa VAT</p>
-                                        <p className="text-2xl font-black text-slate-400">0 <span className="text-sm font-bold text-slate-400">TZS</span></p>
+                                        <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold mb-2">Idadi ya Risiti</p>
+                                        <p className="text-2xl font-black text-slate-800">{reportReceipts.length}</p>
                                     </div>
                                     <div className="p-6 bg-slate-50 hover:bg-slate-100 transition-colors rounded-2xl border border-slate-100/80">
                                         <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold mb-2">Mauzo Yanayotozwa VAT</p>
-                                        <p className="text-2xl font-black text-slate-800">{receipts.reduce((sum, r) => sum + r.total, 0).toLocaleString()} <span className="text-sm font-bold text-slate-500">TZS</span></p>
+                                        <p className="text-2xl font-black text-slate-800">{reportTotal.toLocaleString()} <span className="text-sm font-bold text-slate-500">TZS</span></p>
                                     </div>
                                     <div className="p-6 bg-primary/5 hover:bg-primary/10 transition-colors rounded-2xl border border-primary/20 shadow-sm shadow-primary/5">
                                         <p className="text-[11px] text-primary uppercase tracking-widest font-bold mb-2">VAT Inayokadiriwa (18%)</p>
-                                        <p className="text-2xl font-black text-primary">{(receipts.reduce((sum, r) => sum + r.total, 0) * 0.18).toLocaleString()} <span className="text-sm font-bold opacity-70">TZS</span></p>
+                                        <p className="text-2xl font-black text-primary">{(reportTotal * 0.18).toLocaleString()} <span className="text-sm font-bold opacity-70">TZS</span></p>
                                     </div>
                                 </div>
                             </div>
