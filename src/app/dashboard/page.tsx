@@ -20,7 +20,9 @@ import {
     X,
     ScanLine,
     Cpu,
-    Menu
+    Menu,
+    Trash2,
+    Check
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import Link from "next/link";
@@ -45,6 +47,8 @@ export default function Dashboard() {
     const [isSaving, setIsSaving] = useState(false);
     const [toastMessage, setToastMessage] = useState<string | null>(null);
     const [showNotifications, setShowNotifications] = useState(false);
+    const [deleteReceiptId, setDeleteReceiptId] = useState<string | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const fetchSession = async () => {
         try {
@@ -134,6 +138,28 @@ export default function Dashboard() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    };
+
+    const handleDeleteReceipt = async (id: string) => {
+        setIsDeleting(true);
+        try {
+            const res = await fetch(`/api/receipts/${id}`, { method: "DELETE" });
+            if (res.ok) {
+                setDeleteReceiptId(null);
+                await fetchReceipts();
+                setToastMessage('Risiti imefutwa kikamilifu!');
+                setTimeout(() => setToastMessage(null), 3000);
+            } else {
+                const data = await res.json();
+                setToastMessage(data.error || 'Imeshindwa kufuta risiti.');
+                setTimeout(() => setToastMessage(null), 3000);
+            }
+        } catch {
+            setToastMessage('Hitilafu ya mtandao. Jaribu tena.');
+            setTimeout(() => setToastMessage(null), 3000);
+        } finally {
+            setIsDeleting(false);
+        }
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -529,8 +555,8 @@ export default function Dashboard() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto mt-2 sm:mt-0 pt-4 sm:pt-0 border-t sm:border-0 border-slate-100">
-                                                    <div className="text-left sm:text-right">
+                                                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto mt-2 sm:mt-0 pt-4 sm:pt-0 border-t sm:border-0 border-slate-100">
+                                                    <div className="text-left sm:text-right mr-3">
                                                         <p className="font-bold text-lg text-slate-800">{r.total.toLocaleString()} TZS</p>
                                                         <p className="text-[11px] text-primary uppercase font-bold bg-primary/10 px-2 py-0.5 rounded-md inline-block mt-1">{r.paymentMethod}</p>
                                                     </div>
@@ -540,6 +566,39 @@ export default function Dashboard() {
                                                     >
                                                         <Eye className="w-5 h-5" />
                                                     </button>
+
+                                                    {deleteReceiptId === r.id ? (
+                                                        <div className="flex items-center gap-1.5">
+                                                            <button
+                                                                onClick={() => handleDeleteReceipt(r.id)}
+                                                                disabled={isDeleting}
+                                                                className="p-2.5 bg-red-500 rounded-xl text-white hover:bg-red-600 transition-all disabled:opacity-50 shadow-sm"
+                                                                title="Thibitisha kufuta"
+                                                            >
+                                                                {isDeleting ? (
+                                                                    <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                                                                ) : (
+                                                                    <Check className="w-4 h-4" />
+                                                                )}
+                                                            </button>
+                                                            <button
+                                                                onClick={() => setDeleteReceiptId(null)}
+                                                                disabled={isDeleting}
+                                                                className="p-2.5 bg-slate-100 rounded-xl text-slate-500 hover:bg-slate-200 transition-all"
+                                                                title="Ghairi"
+                                                            >
+                                                                <X className="w-4 h-4" />
+                                                            </button>
+                                                        </div>
+                                                    ) : (
+                                                        <button
+                                                            onClick={() => setDeleteReceiptId(r.id)}
+                                                            className="p-3 bg-white border border-slate-200 rounded-xl text-slate-400 sm:opacity-0 group-hover:opacity-100 transition-all hover:text-red-500 hover:border-red-200 hover:bg-red-50 hover:shadow-sm"
+                                                            title="Futa risiti"
+                                                        >
+                                                            <Trash2 className="w-5 h-5" />
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))

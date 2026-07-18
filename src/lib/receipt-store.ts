@@ -69,3 +69,12 @@ export async function getReceiptsByUser(userId: string): Promise<StoredReceipt[]
     const receipts = await readReceipts();
     return receipts.filter((r) => r.userId === userId).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
+
+export async function deleteReceipt(id: string, userId: string): Promise<boolean> {
+    const receipts = await readReceipts();
+    const index = receipts.findIndex((r) => r.id === id && r.userId === userId);
+    if (index === -1) return false;
+    receipts.splice(index, 1);
+    await writeReceipts(receipts);
+    return true;
+}
